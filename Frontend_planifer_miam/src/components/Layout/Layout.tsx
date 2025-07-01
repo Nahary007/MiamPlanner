@@ -17,7 +17,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     <div className="min-h-screen bg-gray-50">
       <Navigation />
       <div className="lg:pl-64">
-        <main className="pt-16 lg:pt-0">
+        <main className="pt-16 lg:pt-0 pb-20 lg:pb-0">
           {children}
         </main>
       </div>
