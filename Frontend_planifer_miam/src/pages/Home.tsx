@@ -38,23 +38,23 @@ const Home: React.FC = () => {
       {/* Header */}
       <header className="bg-white shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
+          <div className="flex justify-between items-center py-4 md:py-6">
             <div className="flex items-center">
-              <ChefHat className="h-8 w-8 text-emerald-600" />
-              <span className="ml-2 text-2xl font-bold text-gray-900">
+              <ChefHat className="h-6 w-6 md:h-8 md:w-8 text-emerald-600" />
+              <span className="ml-2 text-xl md:text-2xl font-bold text-gray-900">
                 MiamPlanner
               </span>
             </div>
-            <div className="flex space-x-4">
+            <div className="flex space-x-2 md:space-x-4">
               <Link
                 to="/login"
-                className="text-gray-700 hover:text-emerald-600 px-3 py-2 rounded-md text-sm font-medium transition-colors"
+                className="text-gray-700 hover:text-emerald-600 px-2 md:px-3 py-2 rounded-md text-xs md:text-sm font-medium transition-colors"
               >
                 Se connecter
               </Link>
               <Link
                 to="/register"
-                className="bg-emerald-600 hover:bg-emerald-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
+                className="bg-emerald-600 hover:bg-emerald-700 text-white px-3 md:px-4 py-2 rounded-md text-xs md:text-sm font-medium transition-colors"
               >
                 S'inscrire
               </Link>
@@ -75,16 +75,16 @@ const Home: React.FC = () => {
             votre stock alimentaire et générer automatiquement vos listes de
             courses pour réduire le gaspillage.
           </p>
-          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center px-4">
+          <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center items-center px-4 max-w-md sm:max-w-none mx-auto">
             <Link
               to="/register"
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-6 md:px-8 py-3 rounded-lg text-base md:text-lg font-medium transition-colors shadow-lg"
+              className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white px-6 md:px-8 py-3 rounded-lg text-base md:text-lg font-medium transition-colors shadow-lg text-center"
             >
               Commencer gratuitement
             </Link>
             <Link
               to="/login"
-              className="bg-white hover:bg-gray-50 text-gray-900 px-6 md:px-8 py-3 rounded-lg text-base md:text-lg font-medium transition-colors border border-gray-300 shadow-lg"
+              className="w-full sm:w-auto bg-white hover:bg-gray-50 text-gray-900 px-6 md:px-8 py-3 rounded-lg text-base md:text-lg font-medium transition-colors border border-gray-300 shadow-lg text-center"
             >
               Se connecter
             </Link>
@@ -93,13 +93,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-white">
+      <section className="py-12 md:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
               Tout ce dont vous avez besoin
             </h2>
-            <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+            <p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto px-4">
               Une solution complète pour organiser vos repas et optimiser vos
               achats alimentaires.
             </p>
@@ -130,13 +130,13 @@ const Home: React.FC = () => {
       </section>
 
       {/* Stats Section */}
-      <section className="py-20 bg-emerald-600">
+      <section className="py-12 md:py-20 bg-emerald-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+          <div className="text-center mb-8 md:mb-16">
+            <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-white mb-4">
               Rejoignez la communauté
             </h2>
-            <p className="text-xl text-emerald-100">
+            <p className="text-lg md:text-xl text-emerald-100 px-4">
               Des milliers d'utilisateurs nous font déjà confiance
             </p>
           </div>
@@ -190,14 +190,16 @@ const Home: React.FC = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-gray-900 text-white py-12">
+      <footer className="bg-gray-900 text-white py-8 md:py-12">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col md:flex-row justify-between items-center">
-            <div className="flex items-center mb-4 md:mb-0">
-              <ChefHat className="h-6 w-6 text-emerald-400" />
-              <span className="ml-2 text-lg font-bold">MiamPlanner</span>
+          <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+            <div className="flex items-center">
+              <ChefHat className="h-5 w-5 md:h-6 md:w-6 text-emerald-400" />
+              <span className="ml-2 text-base md:text-lg font-bold">
+                MiamPlanner
+              </span>
             </div>
-            <div className="text-gray-400">
+            <div className="text-sm md:text-base text-gray-400 text-center">
               © 2025 MiamPlanner. Tous droits réservés.
             </div>
           </div>
