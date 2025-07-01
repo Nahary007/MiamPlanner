@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { Calendar, Package, AlertTriangle, TrendingUp } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { dashboardAPI } from '../services/api';
-import type { DashboardStats } from '../types';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import { Calendar, Package, AlertTriangle, TrendingUp } from "lucide-react";
+import { useAuth } from "../contexts/AuthContext";
+import { dashboardAPI } from "../services/api";
+import type { DashboardStats } from "../types";
+import toast from "react-hot-toast";
 
 const Dashboard: React.FC = () => {
   const { user } = useAuth();
@@ -16,7 +16,7 @@ const Dashboard: React.FC = () => {
         const data = await dashboardAPI.getStats();
         setStats(data);
       } catch (error: any) {
-        toast.error('Erreur lors du chargement des statistiques');
+        toast.error("Erreur lors du chargement des statistiques");
       } finally {
         setLoading(false);
       }
@@ -27,36 +27,36 @@ const Dashboard: React.FC = () => {
 
   const statsCards = [
     {
-      title: 'Repas planifiés',
-      subtitle: 'cette semaine',
+      title: "Repas planifiés",
+      subtitle: "cette semaine",
       value: stats?.plannedMealsThisWeek || 0,
       icon: Calendar,
-      color: 'text-emerald-600',
-      bgColor: 'bg-emerald-100',
+      color: "text-emerald-600",
+      bgColor: "bg-emerald-100",
     },
     {
-      title: 'Ingrédients',
-      subtitle: 'en stock',
+      title: "Ingrédients",
+      subtitle: "en stock",
       value: stats?.stockItemsCount || 0,
       icon: Package,
-      color: 'text-blue-600',
-      bgColor: 'bg-blue-100',
+      color: "text-blue-600",
+      bgColor: "bg-blue-100",
     },
     {
-      title: 'Produits',
-      subtitle: 'bientôt périmés',
+      title: "Produits",
+      subtitle: "bientôt périmés",
       value: stats?.expiringItemsCount || 0,
       icon: AlertTriangle,
-      color: 'text-orange-600',
-      bgColor: 'bg-orange-100',
+      color: "text-orange-600",
+      bgColor: "bg-orange-100",
     },
     {
-      title: 'Objectif',
-      subtitle: 'zéro gaspillage',
-      value: '100%',
+      title: "Objectif",
+      subtitle: "zéro gaspillage",
+      value: "100%",
       icon: TrendingUp,
-      color: 'text-green-600',
-      bgColor: 'bg-green-100',
+      color: "text-green-600",
+      bgColor: "bg-green-100",
     },
   ];
 
@@ -87,22 +87,30 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6 mb-8">
         {statsCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow"
+              className="bg-white rounded-lg shadow-sm border border-gray-200 p-3 md:p-6 hover:shadow-md transition-shadow"
             >
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm font-medium text-gray-600">{stat.title}</p>
-                  <p className="text-xs text-gray-500">{stat.subtitle}</p>
-                  <p className="text-2xl font-bold text-gray-900 mt-2">{stat.value}</p>
+              <div className="flex flex-col md:flex-row md:items-center md:justify-between">
+                <div className="mb-2 md:mb-0">
+                  <p className="text-xs md:text-sm font-medium text-gray-600 truncate">
+                    {stat.title}
+                  </p>
+                  <p className="text-xs text-gray-500 truncate">
+                    {stat.subtitle}
+                  </p>
+                  <p className="text-lg md:text-2xl font-bold text-gray-900 mt-1 md:mt-2">
+                    {stat.value}
+                  </p>
                 </div>
-                <div className={`${stat.bgColor} p-3 rounded-lg`}>
-                  <Icon className={`h-6 w-6 ${stat.color}`} />
+                <div
+                  className={`${stat.bgColor} p-2 md:p-3 rounded-lg self-end md:self-auto`}
+                >
+                  <Icon className={`h-4 w-4 md:h-6 md:w-6 ${stat.color}`} />
                 </div>
               </div>
             </div>
@@ -111,54 +119,70 @@ const Dashboard: React.FC = () => {
       </div>
 
       {/* Quick Actions */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-8">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Actions rapides</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+      <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6 mb-8">
+        <h2 className="text-xl font-semibold text-gray-900 mb-4">
+          Actions rapides
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
           <a
             href="/planning"
-            className="flex items-center p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
+            className="flex items-center p-3 md:p-4 bg-emerald-50 rounded-lg hover:bg-emerald-100 transition-colors"
           >
-            <Calendar className="h-8 w-8 text-emerald-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-gray-900">Planifier mes repas</h3>
-              <p className="text-sm text-gray-600">Organiser la semaine</p>
+            <Calendar className="h-6 w-6 md:h-8 md:w-8 text-emerald-600 mr-3 flex-shrink-0" />
+            <div className="min-w-0">
+              <h3 className="font-medium text-gray-900 text-sm md:text-base">
+                Planifier mes repas
+              </h3>
+              <p className="text-xs md:text-sm text-gray-600 truncate">
+                Organiser la semaine
+              </p>
             </div>
           </a>
-          
+
           <a
             href="/recipes"
-            className="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+            className="flex items-center p-3 md:p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
           >
-            <Package className="h-8 w-8 text-blue-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-gray-900">Ajouter une recette</h3>
-              <p className="text-sm text-gray-600">Enrichir ma collection</p>
+            <Package className="h-6 w-6 md:h-8 md:w-8 text-blue-600 mr-3 flex-shrink-0" />
+            <div className="min-w-0">
+              <h3 className="font-medium text-gray-900 text-sm md:text-base">
+                Ajouter une recette
+              </h3>
+              <p className="text-xs md:text-sm text-gray-600 truncate">
+                Enrichir ma collection
+              </p>
             </div>
           </a>
-          
+
           <a
             href="/stock"
-            className="flex items-center p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors"
+            className="flex items-center p-3 md:p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors sm:col-span-2 lg:col-span-1"
           >
-            <AlertTriangle className="h-8 w-8 text-orange-600 mr-3" />
-            <div>
-              <h3 className="font-medium text-gray-900">Gérer mon stock</h3>
-              <p className="text-sm text-gray-600">Éviter le gaspillage</p>
+            <AlertTriangle className="h-6 w-6 md:h-8 md:w-8 text-orange-600 mr-3 flex-shrink-0" />
+            <div className="min-w-0">
+              <h3 className="font-medium text-gray-900 text-sm md:text-base">
+                Gérer mon stock
+              </h3>
+              <p className="text-xs md:text-sm text-gray-600 truncate">
+                Éviter le gaspillage
+              </p>
             </div>
           </a>
         </div>
       </div>
 
       {/* Tips Section */}
-      <div className="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-lg shadow-sm p-6 text-white">
-        <h2 className="text-xl font-semibold mb-2">💡 Conseil du jour</h2>
-        <p className="text-emerald-100 mb-4">
-          Planifiez vos repas en fonction des ingrédients qui arrivent bientôt à expiration 
-          pour réduire le gaspillage alimentaire.
+      <div className="bg-gradient-to-r from-emerald-500 to-blue-600 rounded-lg shadow-sm p-4 md:p-6 text-white">
+        <h2 className="text-lg md:text-xl font-semibold mb-2">
+          💡 Conseil du jour
+        </h2>
+        <p className="text-emerald-100 mb-4 text-sm md:text-base">
+          Planifiez vos repas en fonction des ingrédients qui arrivent bientôt à
+          expiration pour réduire le gaspillage alimentaire.
         </p>
         <a
           href="/planning"
-          className="inline-flex items-center px-4 py-2 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-colors"
+          className="inline-flex items-center px-3 py-2 md:px-4 md:py-2 bg-white bg-opacity-20 rounded-lg hover:bg-opacity-30 transition-colors text-sm md:text-base"
         >
           Commencer maintenant
         </a>
