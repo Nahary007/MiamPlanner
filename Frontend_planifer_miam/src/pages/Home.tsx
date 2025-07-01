@@ -105,21 +105,21 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 md:gap-8">
             {features.map((feature, index) => {
               const Icon = feature.icon;
               return (
                 <div
                   key={index}
-                  className="text-center p-4 md:p-6 rounded-lg border border-gray-100 hover:shadow-lg transition-shadow"
+                  className="text-center p-4 md:p-6 rounded-lg border border-gray-100 hover:shadow-lg transition-all duration-300 bg-white"
                 >
-                  <div className="inline-flex items-center justify-center w-10 h-10 md:w-12 md:h-12 bg-emerald-100 rounded-lg mb-3 md:mb-4">
-                    <Icon className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
+                  <div className="inline-flex items-center justify-center w-12 h-12 md:w-14 md:h-14 bg-emerald-100 rounded-xl mb-4">
+                    <Icon className="h-6 w-6 md:h-7 md:w-7 text-emerald-600" />
                   </div>
-                  <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2">
+                  <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-2 leading-tight">
                     {feature.title}
                   </h3>
-                  <p className="text-sm md:text-base text-gray-600">
+                  <p className="text-sm md:text-base text-gray-600 leading-relaxed">
                     {feature.description}
                   </p>
                 </div>
@@ -141,28 +141,28 @@ const Home: React.FC = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 md:gap-8 text-center">
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 text-center">
+            <div className="bg-white bg-opacity-10 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
                 10k+
               </div>
-              <div className="text-sm md:text-base text-emerald-100">
+              <div className="text-sm md:text-base text-emerald-100 font-medium">
                 Utilisateurs actifs
               </div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <div className="bg-white bg-opacity-10 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
                 50k+
               </div>
-              <div className="text-sm md:text-base text-emerald-100">
+              <div className="text-sm md:text-base text-emerald-100 font-medium">
                 Repas planifiés
               </div>
             </div>
-            <div>
-              <div className="text-3xl md:text-4xl font-bold text-white mb-2">
+            <div className="bg-white bg-opacity-10 rounded-xl p-4 md:p-6 backdrop-blur-sm">
+              <div className="text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-2">
                 30%
               </div>
-              <div className="text-sm md:text-base text-emerald-100">
+              <div className="text-sm md:text-base text-emerald-100 font-medium">
                 Réduction du gaspillage moyen
               </div>
             </div>
