@@ -5,24 +5,31 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Symfony\Component\Serializer\Annotation\Groups;
+
 
 #[ORM\Entity]
 class Recipe
 {
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['recipe:read'])]
     #[ORM\Column(length: 255)]
     private string $nameRecipe;
 
+    #[Groups(['recipe:read'])]
     #[ORM\Column(type: 'text')]
     private string $description;
 
+    #[Groups(['recipe:read'])]
     #[ORM\Column(type: 'text')]
     private string $instructions;
 
+    #[Groups(['recipe:read'])]
     #[ORM\Column]
     private int $servings;
 
@@ -44,4 +51,53 @@ class Recipe
     }
 
     // Getters / Setters ...
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getNameRecipe(): string
+    {
+        return $this->nameRecipe;
+    }
+
+    public function setNameRecipe(string $nameRecipe): self
+    {
+        $this->nameRecipe = $nameRecipe;
+        return $this;
+    }
+
+    public function getDescription(): string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+        return $this;
+    }
+
+    public function getInstructions(): string
+    {
+        return $this->instructions;
+    }
+
+    public function setInstructions(string $instructions): self
+    {
+        $this->instructions = $instructions;
+        return $this;
+    }
+
+    public function getServings(): int
+    {
+        return $this->servings;
+    }
+
+    public function setServings(int $servings): self
+    {
+        $this->servings = $servings;
+        return $this;
+    }
+
 }
