@@ -11,8 +11,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-class UserController
+class UserController extends AbstractController
 {
     #[Route('/api/register', name: 'api_register', methods: ['POST', 'OPTIONS'])]
     public function register(
@@ -77,6 +78,24 @@ class UserController
                 'email' => $user->getEmail(),
                 'nom' => $user->getNom(),
             ]
+        ]);
+    }
+
+    #[Route('/api/user/profile', name: 'api_user_profile', methods: ['GET'])]
+    public function getProfile(): JsonResponse
+    {
+        /** @var User|null $user */
+        $user = $this->getUser();
+        
+        if (!$user instanceof User) {
+            return $this->json(['error' => 'Utilisateur non authentifié'], 401);
+        }
+
+        return $this->json([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'nom' => $user->getNom(),
+            'roles' => $user->getRoles(),
         ]);
     }
 }
