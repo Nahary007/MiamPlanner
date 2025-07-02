@@ -2,12 +2,12 @@ import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, Mail, Lock } from "lucide-react";
-import { useAuth } from "../../contexts/AuthContext";
 import toast from "react-hot-toast";
 import type { LoginForm } from "../../types";
+import axios from "axios";
+
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -21,15 +21,23 @@ const Login: React.FC = () => {
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      await login(data.email, data.password);
+      const response = await axios.post("http://localhost:8000/api/login", {
+        email: data.email,
+        password: data.password,
+      });
+
+      const token = response.data.token;
+      localStorage.setItem("token", token); // stocker le JWT
+
       toast.success("Connexion réussie !");
       navigate(from, { replace: true });
     } catch (error: any) {
       toast.error(
-        error.response?.data?.message || "Erreur lors de la connexion",
+        error.response?.data?.message || "Erreur lors de la connexion"
       );
     }
   };
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
