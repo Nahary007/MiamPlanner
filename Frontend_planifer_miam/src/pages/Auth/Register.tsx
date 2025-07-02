@@ -2,12 +2,11 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, User, Mail, Lock } from "lucide-react";
-import { useAuth } from "../../contexts/AuthContext";
 import toast from "react-hot-toast";
 import type { RegisterForm } from "../../types";
+import axios from "axios";
 
 const Register: React.FC = () => {
-  const { register: registerUser } = useAuth();
   const navigate = useNavigate();
 
   const {
@@ -18,13 +17,22 @@ const Register: React.FC = () => {
 
   const onSubmit = async (data: RegisterForm) => {
     try {
-      await registerUser(data.nom, data.email, data.password);
+      await axios.post("http://localhost:8000/api/register", {
+        nom: data.nom,
+        email: data.email,
+        password: data.password,
+      }, {
+        withCredentials: true // si besoin de cookies/token en CORS
+      });
+
       toast.success("Compte créé avec succès !");
       navigate("/dashboard");
     } catch (error: any) {
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la création du compte",
-      );
+      const message =
+        error.response?.data?.message ||
+        error.response?.data?.errors ||
+        "Erreur lors de la création du compte";
+      toast.error(message);
     }
   };
 

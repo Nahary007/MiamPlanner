@@ -3,11 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\PlannelMealEntity;
-use Doctrine\bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @extends ServiceEntityRepository<Recipe>
+ * @extends ServiceEntityRepository<PlannelMealEntity>
  */
 class PlannedMealRepository extends ServiceEntityRepository
 {
