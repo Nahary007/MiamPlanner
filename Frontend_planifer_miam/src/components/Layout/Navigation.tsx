@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   Home, 
@@ -9,13 +9,42 @@ import {
   User,
   LogOut
 } from 'lucide-react';
-import { useAuth } from '../../contexts/AuthContext';
 import toast from 'react-hot-toast';
 
 const Navigation: React.FC = () => {
-  const { user, logout, isAuthenticated } = useAuth();
   const location = useLocation();
   const navigate = useNavigate();
+
+  const [user, setUser] = useState<{ nom: string } | null>(null);
+  const token = localStorage.getItem('token');
+  const isAuthenticated = !!token;
+
+  // Si tu veux récupérer les infos de l'utilisateur depuis ton backend
+  useEffect(() => {
+    const fetchUser = async () => {
+      if (token) {
+        try {
+          const response = await fetch('http://localhost:8000/api/user', {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+
+          if (response.ok) {
+            const userData = await response.json();
+            setUser(userData);
+          } else {
+            setUser(null);
+          }
+        } catch (error) {
+          console.error('Erreur lors de la récupération du user:', error);
+          setUser(null);
+        }
+      }
+    };
+
+    fetchUser();
+  }, [token]);
 
   const navItems = [
     { path: '/dashboard', label: 'Accueil', icon: Home },
@@ -25,14 +54,10 @@ const Navigation: React.FC = () => {
     { path: '/shopping-list', label: 'Courses', icon: ShoppingCart },
   ];
 
-  const handleLogout = async () => {
-    try {
-      await logout();
-      toast.success('Déconnexion réussie');
-      navigate('/');
-    } catch (error) {
-      toast.error('Erreur lors de la déconnexion');
-    }
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    toast.success('Déconnexion réussie');
+    navigate('/');
   };
 
   if (!isAuthenticated) {
@@ -48,13 +73,13 @@ const Navigation: React.FC = () => {
             <ChefHat className="h-8 w-8 text-emerald-600" />
             <span className="ml-2 text-xl font-bold text-gray-900">MiamPlanner</span>
           </div>
-          
+
           <div className="mt-8 flex flex-grow flex-col">
             <nav className="flex-1 space-y-1 px-4">
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const isActive = location.pathname === item.path;
-                
+
                 return (
                   <Link
                     key={item.path}
@@ -75,7 +100,7 @@ const Navigation: React.FC = () => {
                 );
               })}
             </nav>
-            
+
             <div className="flex-shrink-0 p-4 border-t border-gray-200">
               <div className="group block">
                 <div className="flex items-center">
@@ -85,7 +110,7 @@ const Navigation: React.FC = () => {
                     </div>
                   </div>
                   <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-gray-700">{user?.nom}</p>
+                    <p className="text-sm font-medium text-gray-700">{user?.nom || 'Utilisateur'}</p>
                     <Link 
                       to="/profile" 
                       className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
@@ -118,7 +143,7 @@ const Navigation: React.FC = () => {
             <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
               <User className="h-4 w-4 text-emerald-600" />
             </div>
-            <span className="text-sm font-medium text-gray-700">{user?.nom}</span>
+            <span className="text-sm font-medium text-gray-700">{user?.nom || 'Utilisateur'}</span>
           </div>
         </div>
 
@@ -128,7 +153,7 @@ const Navigation: React.FC = () => {
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
-              
+
               return (
                 <Link
                   key={item.path}
@@ -144,8 +169,8 @@ const Navigation: React.FC = () => {
                 </Link>
               );
             })}
-            
-            {/* Profile/Logout button */}
+
+            {/* Profile/Logout */}
             <Link
               to="/profile"
               className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
