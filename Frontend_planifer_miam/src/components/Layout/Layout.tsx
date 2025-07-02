@@ -1,15 +1,16 @@
 import React from 'react';
 import Navigation from './Navigation';
-import { useAuth } from '../../contexts/AuthContext';
 
 interface LayoutProps {
   children: React.ReactNode;
 }
 
 const Layout: React.FC<LayoutProps> = ({ children }) => {
-  const { isAuthenticated } = useAuth();
+  const token = localStorage.getItem('token');
+  const isAuthenticated = !!token;
 
   if (!isAuthenticated) {
+    // Si pas connecté : pas de Navigation, juste afficher la page en brut (ex: Login, Register, Home)
     return <>{children}</>;
   }
 
