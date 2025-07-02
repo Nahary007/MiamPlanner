@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
@@ -9,10 +9,6 @@ import axios from "axios";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/dashboard";
-
   const {
     register,
     handleSubmit,
