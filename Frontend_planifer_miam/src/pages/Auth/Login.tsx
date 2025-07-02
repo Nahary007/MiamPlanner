@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, Mail, Lock } from "lucide-react";
 import toast from "react-hot-toast";
@@ -9,10 +9,6 @@ import axios from "axios";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
-  const location = useLocation();
-
-  const from = location.state?.from?.pathname || "/dashboard";
-
   const {
     register,
     handleSubmit,
@@ -27,10 +23,10 @@ const Login: React.FC = () => {
       });
 
       const token = response.data.token;
-      localStorage.setItem("token", token); // stocker le JWT
+      localStorage.setItem("token", token);
 
       toast.success("Connexion réussie !");
-      navigate(from, { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Erreur lors de la connexion"
