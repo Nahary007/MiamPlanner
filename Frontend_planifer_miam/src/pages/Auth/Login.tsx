@@ -27,10 +27,10 @@ const Login: React.FC = () => {
       });
 
       const token = response.data.token;
-      localStorage.setItem("token", token); // stocker le JWT
+      localStorage.setItem("token", token);
 
       toast.success("Connexion réussie !");
-      navigate(from, { replace: true });
+      navigate("/dashboard", { replace: true });
     } catch (error: any) {
       toast.error(
         error.response?.data?.message || "Erreur lors de la connexion"
