@@ -19,26 +19,14 @@ const Navigation: React.FC = () => {
   const token = localStorage.getItem('token');
   const isAuthenticated = !!token;
 
-  // Récupérer les infos de l'utilisateur depuis le localStorage ou le token JWT
+  // Si tu veux récupérer les infos de l'utilisateur depuis ton backend
   useEffect(() => {
     const fetchUser = async () => {
       if (token) {
         try {
-          // Essayer de décoder le token JWT pour récupérer les infos utilisateur
-          const tokenParts = token.split('.');
-          if (tokenParts.length === 3) {
-            const payload = JSON.parse(atob(tokenParts[1]));
-            if (payload.username) {
-              setUser({ nom: payload.username });
-              return;
-            }
-          }
-
-          // Si le décodage du token échoue, essayer l'API
-          const response = await fetch('http://localhost:8000/api/user/profile', {
+          const response = await fetch('http://localhost:8000/api/user', {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'application/json',
             },
           });
 
@@ -46,23 +34,11 @@ const Navigation: React.FC = () => {
             const userData = await response.json();
             setUser(userData);
           } else {
-            // Si l'API échoue, utiliser les données du localStorage
-            const storedUser = localStorage.getItem('user');
-            if (storedUser) {
-              setUser(JSON.parse(storedUser));
-            } else {
-              setUser({ nom: 'Utilisateur' });
-            }
+            setUser(null);
           }
         } catch (error) {
           console.error('Erreur lors de la récupération du user:', error);
-          // Fallback: utiliser les données du localStorage ou un nom par défaut
-          const storedUser = localStorage.getItem('user');
-          if (storedUser) {
-            setUser(JSON.parse(storedUser));
-          } else {
-            setUser({ nom: 'Utilisateur' });
-          }
+          setUser(null);
         }
       }
     };
@@ -80,7 +56,6 @@ const Navigation: React.FC = () => {
 
   const handleLogout = () => {
     localStorage.removeItem('token');
-    localStorage.removeItem('user');
     toast.success('Déconnexion réussie');
     navigate('/');
   };
