@@ -12,6 +12,8 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Core\Security;
 
 class UserController extends AbstractController
 {
@@ -81,21 +83,19 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/api/user/profile', name: 'api_user_profile', methods: ['GET'])]
-    public function getProfile(): JsonResponse
+    #[Route('/api/user', name: 'api_get_user', methods: ['GET'])]
+    public function getCurrentUser(): JsonResponse
     {
-        /** @var User|null $user */
         $user = $this->getUser();
-        
-        if (!$user instanceof User) {
-            return $this->json(['error' => 'Utilisateur non authentifié'], 401);
+
+        if (!$user || !$user instanceof \App\Entity\User) {
+            return new JsonResponse(['message' => 'Non authentifié'], Response::HTTP_UNAUTHORIZED);
         }
 
-        return $this->json([
+        return new JsonResponse([
             'id' => $user->getId(),
             'email' => $user->getEmail(),
             'nom' => $user->getNom(),
-            'roles' => $user->getRoles(),
         ]);
     }
 }
