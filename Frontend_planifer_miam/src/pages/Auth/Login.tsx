@@ -6,7 +6,6 @@ import toast from "react-hot-toast";
 import type { LoginForm } from "../../types";
 import axios from "axios";
 
-
 const Login: React.FC = () => {
   const navigate = useNavigate();
   const {
@@ -22,8 +21,9 @@ const Login: React.FC = () => {
         password: data.password,
       });
 
-      const token = response.data.token;
+      const { token, user } = response.data;
       localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(user));
 
       toast.success("Connexion réussie !");
       navigate("/dashboard", { replace: true });
@@ -33,7 +33,6 @@ const Login: React.FC = () => {
       );
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">

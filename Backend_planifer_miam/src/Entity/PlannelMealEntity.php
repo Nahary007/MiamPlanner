@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 class PlannelMealEntity
@@ -10,6 +11,7 @@ class PlannelMealEntity
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
+    #[Groups(['meal:read'])]
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'plannelMeals')]
@@ -18,12 +20,15 @@ class PlannelMealEntity
 
     #[ORM\ManyToOne(inversedBy: 'plannelMeals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['meal:read'])]
     private Recipe $recipe;
 
     #[ORM\Column(type: 'date')]
+    #[Groups(['meal:read'])]
     private \DateTimeInterface $date;
 
     #[ORM\Column(length: 100)]
+    #[Groups(['meal:read'])]
     private string $mealType; // Exemple: Breakfast, Lunch, Dinner
 
     // Getters / Setters ...
@@ -76,5 +81,4 @@ class PlannelMealEntity
         $this->mealType = $mealType;
         return $this;
     }
-
 }
