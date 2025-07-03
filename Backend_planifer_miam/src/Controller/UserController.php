@@ -11,8 +11,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Security\Core\Security;
 
-class UserController
+class UserController extends AbstractController
 {
     #[Route('/api/register', name: 'api_register', methods: ['POST', 'OPTIONS'])]
     public function register(
@@ -77,6 +80,22 @@ class UserController
                 'email' => $user->getEmail(),
                 'nom' => $user->getNom(),
             ]
+        ]);
+    }
+
+    #[Route('/api/user', name: 'api_get_user', methods: ['GET'])]
+    public function getCurrentUser(): JsonResponse
+    {
+        $user = $this->getUser();
+
+        if (!$user || !$user instanceof \App\Entity\User) {
+            return new JsonResponse(['message' => 'Non authentifié'], Response::HTTP_UNAUTHORIZED);
+        }
+
+        return new JsonResponse([
+            'id' => $user->getId(),
+            'email' => $user->getEmail(),
+            'nom' => $user->getNom(),
         ]);
     }
 }
