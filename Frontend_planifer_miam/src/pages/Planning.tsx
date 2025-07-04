@@ -85,10 +85,13 @@ const Planning: React.FC = () => {
     return (
       <div className="p-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/4 mb-6"></div>
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-1/4 mb-6"></div>
           <div className="grid grid-cols-7 gap-4">
             {[...Array(21)].map((_, i) => (
-              <div key={i} className="h-32 bg-gray-200 rounded-lg"></div>
+              <div
+                key={i}
+                className="h-32 bg-gray-200 dark:bg-gray-700 rounded-lg"
+              ></div>
             ))}
           </div>
         </div>
@@ -100,26 +103,26 @@ const Planning: React.FC = () => {
     <div className="p-6">
       {/* Header */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-4 md:mb-0">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4 md:mb-0">
           Planificateur de repas
         </h1>
 
         <div className="flex items-center justify-between space-x-2">
           <button
             onClick={() => navigateWeek("prev")}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
           >
             <ChevronLeft className="h-5 w-5" />
           </button>
 
-          <span className="text-sm md:text-lg font-medium text-gray-900 text-center px-2">
+          <span className="text-sm md:text-lg font-medium text-gray-900 dark:text-white text-center px-2">
             {format(currentWeek, "dd MMM", { locale: fr })} -{" "}
             {format(addDays(currentWeek, 6), "dd MMM yyyy", { locale: fr })}
           </span>
 
           <button
             onClick={() => navigateWeek("next")}
-            className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-lg transition-colors"
+            className="p-2 text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white hover:bg-gray-100 dark:hover:bg-gray-800 rounded-lg transition-colors"
           >
             <ChevronRight className="h-5 w-5" />
           </button>
@@ -127,18 +130,18 @@ const Planning: React.FC = () => {
       </div>
 
       {/* Calendar Grid */}
-      <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         {/* Days Header - Desktop */}
-        <div className="hidden md:grid md:grid-cols-7 border-b border-gray-200">
+        <div className="hidden md:grid md:grid-cols-7 border-b border-gray-200 dark:border-gray-700">
           {weekDays.map((day) => (
             <div
               key={day.toISOString()}
-              className="p-4 text-center border-r border-gray-200 last:border-r-0"
+              className="p-4 text-center border-r border-gray-200 dark:border-gray-700 last:border-r-0"
             >
-              <div className="text-sm font-medium text-gray-900">
+              <div className="text-sm font-medium text-gray-900 dark:text-white">
                 {format(day, "EEEE", { locale: fr })}
               </div>
-              <div className="text-lg font-bold text-gray-700 mt-1">
+              <div className="text-lg font-bold text-gray-700 dark:text-gray-300 mt-1">
                 {format(day, "d")}
               </div>
             </div>
@@ -150,10 +153,10 @@ const Planning: React.FC = () => {
           {weekDays.map((day) => (
             <div
               key={day.toISOString()}
-              className="border-b border-gray-200 last:border-b-0"
+              className="border-b border-gray-200 dark:border-gray-700 last:border-b-0"
             >
-              <div className="bg-gray-50 px-4 py-3 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900">
+              <div className="bg-gray-50 dark:bg-gray-700 px-4 py-3 border-b border-gray-200 dark:border-gray-700">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
                   {format(day, "EEEE d MMMM", { locale: fr })}
                 </h3>
               </div>
@@ -164,10 +167,10 @@ const Planning: React.FC = () => {
                 return (
                   <div
                     key={`${dayString}-${mealType.key}`}
-                    className="p-4 border-b border-gray-100 last:border-b-0"
+                    className="p-4 border-b border-gray-100 dark:border-gray-600 last:border-b-0"
                   >
                     <div className="flex items-center justify-between mb-3">
-                      <span className="text-sm font-medium text-gray-700">
+                      <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
                         {mealType.label}
                       </span>
                     </div>
@@ -190,7 +193,7 @@ const Planning: React.FC = () => {
                     ) : (
                       <button
                         onClick={() => handleAddMeal(dayString, mealType.key)}
-                        className="w-full h-12 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 hover:border-emerald-400 hover:text-emerald-600 transition-colors"
+                        className="w-full h-12 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                       >
                         <Plus className="h-4 w-4 mr-2" />
                         <span className="text-sm">Ajouter un repas</span>
