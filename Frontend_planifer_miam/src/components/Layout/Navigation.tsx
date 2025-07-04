@@ -25,8 +25,7 @@ const Navigation: React.FC = () => {
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    toast.success("Déconnexion réussie");
+    logout();
     navigate("/");
   };
 
