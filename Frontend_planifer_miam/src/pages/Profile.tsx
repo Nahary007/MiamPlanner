@@ -50,16 +50,16 @@ const Profile: React.FC = () => {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
         {/* User Info */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
           <div className="flex items-center mb-4 md:mb-6">
-            <div className="h-10 w-10 md:h-12 md:w-12 bg-emerald-100 rounded-full flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
-              <User className="h-5 w-5 md:h-6 md:w-6 text-emerald-600" />
+            <div className="h-10 w-10 md:h-12 md:w-12 bg-emerald-100 dark:bg-emerald-900/30 rounded-full flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
+              <User className="h-5 w-5 md:h-6 md:w-6 text-emerald-600 dark:text-emerald-400" />
             </div>
             <div className="min-w-0">
-              <h2 className="text-lg md:text-xl font-semibold text-gray-900 truncate">
+              <h2 className="text-lg md:text-xl font-semibold text-gray-900 dark:text-white truncate">
                 Informations personnelles
               </h2>
-              <p className="text-sm md:text-base text-gray-600 truncate">
+              <p className="text-sm md:text-base text-gray-600 dark:text-gray-300 truncate">
                 Vos données de compte
               </p>
             </div>
@@ -67,28 +67,28 @@ const Profile: React.FC = () => {
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                 Nom complet
               </label>
-              <div className="px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+              <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
                 {user?.nom}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                 Adresse email
               </label>
-              <div className="px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+              <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
                 {user?.email}
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-200 mb-1">
                 Rôles
               </label>
-              <div className="px-3 py-2 border border-gray-300 rounded-md bg-gray-50 text-gray-900">
+              <div className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white">
                 {user?.roles?.join(", ") || "Utilisateur"}
               </div>
             </div>
@@ -96,7 +96,7 @@ const Profile: React.FC = () => {
         </div>
 
         {/* Change Password */}
-        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-4 md:p-6">
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6">
           <div className="flex items-center mb-4 md:mb-6">
             <div className="h-10 w-10 md:h-12 md:w-12 bg-blue-100 rounded-full flex items-center justify-center mr-3 md:mr-4 flex-shrink-0">
               <Lock className="h-5 w-5 md:h-6 md:w-6 text-blue-600" />
