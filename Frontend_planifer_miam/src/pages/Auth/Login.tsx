@@ -2,38 +2,26 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, Mail, Lock } from "lucide-react";
-import toast from "react-hot-toast";
 import type { LoginForm } from "../../types";
-import axios from "axios";
-
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login, loading } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginForm>();
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
-        email: data.email,
-        password: data.password,
-      });
-
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-
-      toast.success("Connexion réussie !");
+      await login(data.email, data.password);
       navigate("/dashboard", { replace: true });
-    } catch (error: any) {
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la connexion"
-      );
+    } catch (error) {
+      // Error handling is done in the AuthContext
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
