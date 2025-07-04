@@ -211,7 +211,7 @@ const Planning: React.FC = () => {
           {mealTypes.map((mealType) => (
             <div
               key={mealType.key}
-              className="border-b border-gray-200 last:border-b-0"
+              className="border-b border-gray-200 dark:border-gray-700 last:border-b-0"
             >
               <div className="grid grid-cols-7">
                 {weekDays.map((day) => {
@@ -221,9 +221,9 @@ const Planning: React.FC = () => {
                   return (
                     <div
                       key={`${dayString}-${mealType.key}`}
-                      className="min-h-[120px] p-3 border-r border-gray-200 last:border-r-0"
+                      className="min-h-[120px] p-3 border-r border-gray-200 dark:border-gray-700 last:border-r-0"
                     >
-                      <div className="text-xs font-medium text-gray-500 mb-2">
+                      <div className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
                         {mealType.label}
                       </div>
 
@@ -245,7 +245,7 @@ const Planning: React.FC = () => {
                       ) : (
                         <button
                           onClick={() => handleAddMeal(dayString, mealType.key)}
-                          className="w-full h-16 border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-gray-400 hover:border-emerald-400 hover:text-emerald-600 transition-colors"
+                          className="w-full h-16 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg flex items-center justify-center text-gray-400 dark:text-gray-500 hover:border-emerald-400 hover:text-emerald-600 dark:hover:text-emerald-400 transition-colors"
                         >
                           <Plus className="h-5 w-5" />
                         </button>
