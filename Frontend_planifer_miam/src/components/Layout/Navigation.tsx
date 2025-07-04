@@ -156,7 +156,7 @@ const Navigation: React.FC = () => {
 
         {/* Mobile Bottom Navigation */}
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 lg:hidden z-50">
-          <div className="grid grid-cols-6 h-16">
+          <div className="grid grid-cols-7 h-16">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -177,7 +177,7 @@ const Navigation: React.FC = () => {
               );
             })}
 
-            {/* Profile/Logout */}
+            {/* Profile */}
             <Link
               to="/profile"
               className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
@@ -189,6 +189,15 @@ const Navigation: React.FC = () => {
               <User className="h-5 w-5" />
               <span className="text-xs font-medium">Profil</span>
             </Link>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              className="flex flex-col items-center justify-center space-y-1 transition-colors text-gray-400 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-xs font-medium">Sortir</span>
+            </button>
           </div>
         </div>
       </div>
