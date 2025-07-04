@@ -138,7 +138,7 @@ const Register: React.FC = () => {
                     },
                   })}
                   type="password"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   placeholder="••••••••"
                 />
               </div>
@@ -163,7 +163,7 @@ const Register: React.FC = () => {
           <div className="text-center">
             <Link
               to="/"
-              className="text-sm text-gray-600 hover:text-gray-900 transition-colors"
+              className="text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-200 transition-colors"
             >
               ← Retour à l'accueil
             </Link>
