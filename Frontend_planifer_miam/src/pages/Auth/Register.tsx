@@ -39,11 +39,11 @@ const Register: React.FC = () => {
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Créer votre compte
           </h2>
-          <p className="mt-2 text-center text-sm text-gray-600">
+          <p className="mt-2 text-center text-sm text-gray-600 dark:text-gray-300">
             Ou{" "}
             <Link
               to="/login"
-              className="font-medium text-emerald-600 hover:text-emerald-500 transition-colors"
+              className="font-medium text-emerald-600 dark:text-emerald-400 hover:text-emerald-500 dark:hover:text-emerald-300 transition-colors"
             >
               connectez-vous à votre compte existant
             </Link>
@@ -58,13 +58,13 @@ const Register: React.FC = () => {
             <div>
               <label
                 htmlFor="nom"
-                className="block text-sm font-medium text-gray-700"
+                className="block text-sm font-medium text-gray-700 dark:text-gray-200"
               >
                 Nom complet
               </label>
               <div className="mt-1 relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
+                  <User className="h-5 w-5 text-gray-400 dark:text-gray-500" />
                 </div>
                 <input
                   {...register("nom", {
@@ -75,7 +75,7 @@ const Register: React.FC = () => {
                     },
                   })}
                   type="text"
-                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
+                  className="block w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md leading-5 bg-white dark:bg-gray-800 placeholder-gray-500 dark:placeholder-gray-400 text-gray-900 dark:text-white focus:outline-none focus:ring-emerald-500 focus:border-emerald-500 transition-colors"
                   placeholder="Jean Dupont"
                 />
               </div>
