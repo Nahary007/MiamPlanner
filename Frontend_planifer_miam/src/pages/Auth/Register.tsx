@@ -25,18 +25,18 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 dark:from-gray-900 dark:to-gray-800 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-6 md:space-y-8">
         <div>
           <div className="flex justify-center">
             <div className="flex items-center">
               <ChefHat className="h-10 w-10 text-emerald-600" />
-              <span className="ml-2 text-2xl font-bold text-gray-900">
+              <span className="ml-2 text-2xl font-bold text-gray-900 dark:text-white">
                 MiamPlanner
               </span>
             </div>
           </div>
-          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
+          <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
             Créer votre compte
           </h2>
           <p className="mt-2 text-center text-sm text-gray-600">
