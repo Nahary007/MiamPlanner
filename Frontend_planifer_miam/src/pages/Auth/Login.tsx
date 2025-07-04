@@ -2,38 +2,26 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, Mail, Lock } from "lucide-react";
-import toast from "react-hot-toast";
 import type { LoginForm } from "../../types";
-import axios from "axios";
-
+import { useAuth } from "../../contexts/AuthContext";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
+  const { login, loading } = useAuth();
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<LoginForm>();
 
   const onSubmit = async (data: LoginForm) => {
     try {
-      const response = await axios.post("http://localhost:8000/api/login", {
-        email: data.email,
-        password: data.password,
-      });
-
-      const token = response.data.token;
-      localStorage.setItem("token", token);
-
-      toast.success("Connexion réussie !");
+      await login(data.email, data.password);
       navigate("/dashboard", { replace: true });
-    } catch (error: any) {
-      toast.error(
-        error.response?.data?.message || "Erreur lors de la connexion"
-      );
+    } catch (error) {
+      // Error handling is done in the AuthContext
     }
   };
-
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-emerald-50 to-blue-50 py-8 md:py-12 px-4 sm:px-6 lg:px-8">
@@ -133,10 +121,10 @@ const Login: React.FC = () => {
           <div>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isSubmitting ? "Connexion..." : "Se connecter"}
+              {loading ? "Connexion..." : "Se connecter"}
             </button>
           </div>
 

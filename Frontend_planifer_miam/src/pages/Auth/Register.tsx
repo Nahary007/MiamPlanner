@@ -2,37 +2,25 @@ import React from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { ChefHat, User, Mail, Lock } from "lucide-react";
-import toast from "react-hot-toast";
 import type { RegisterForm } from "../../types";
-import axios from "axios";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Register: React.FC = () => {
   const navigate = useNavigate();
+  const { register: registerUser, loading } = useAuth();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<RegisterForm>();
 
   const onSubmit = async (data: RegisterForm) => {
     try {
-      await axios.post("http://localhost:8000/api/register", {
-        nom: data.nom,
-        email: data.email,
-        password: data.password,
-      }, {
-        withCredentials: true // si besoin de cookies/token en CORS
-      });
-
-      toast.success("Compte créé avec succès !");
-      navigate("/dashboard");
-    } catch (error: any) {
-      const message =
-        error.response?.data?.message ||
-        error.response?.data?.errors ||
-        "Erreur lors de la création du compte";
-      toast.error(message);
+      await registerUser(data.nom, data.email, data.password);
+      navigate("/dashboard", { replace: true });
+    } catch (error) {
+      // Error handling is done in the AuthContext
     }
   };
 
@@ -165,10 +153,10 @@ const Register: React.FC = () => {
           <div>
             <button
               type="submit"
-              disabled={isSubmitting}
+              disabled={loading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-emerald-600 hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
             >
-              {isSubmitting ? "Création..." : "Créer le compte"}
+              {loading ? "Création..." : "Créer le compte"}
             </button>
           </div>
 

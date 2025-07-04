@@ -1,63 +1,32 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { 
-  Home, 
-  Calendar, 
-  ChefHat, 
-  Package, 
-  ShoppingCart, 
+import React from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import {
+  Home,
+  Calendar,
+  ChefHat,
+  Package,
+  ShoppingCart,
   User,
-  LogOut
-} from 'lucide-react';
-import toast from 'react-hot-toast';
+  LogOut,
+} from "lucide-react";
+import { useAuth } from "../../contexts/AuthContext";
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const [user, setUser] = useState<{ nom: string } | null>(null);
-  const token = localStorage.getItem('token');
-  const isAuthenticated = !!token;
-
-  // Si tu veux récupérer les infos de l'utilisateur depuis ton backend
-  useEffect(() => {
-    const fetchUser = async () => {
-      if (token) {
-        try {
-          const response = await fetch('http://localhost:8000/api/user', {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          });
-
-          if (response.ok) {
-            const userData = await response.json();
-            setUser(userData);
-          } else {
-            setUser(null);
-          }
-        } catch (error) {
-          console.error('Erreur lors de la récupération du user:', error);
-          setUser(null);
-        }
-      }
-    };
-
-    fetchUser();
-  }, [token]);
+  const { user, isAuthenticated, logout } = useAuth();
 
   const navItems = [
-    { path: '/dashboard', label: 'Accueil', icon: Home },
-    { path: '/planning', label: 'Planning', icon: Calendar },
-    { path: '/recipes', label: 'Recettes', icon: ChefHat },
-    { path: '/stock', label: 'Stock', icon: Package },
-    { path: '/shopping-list', label: 'Courses', icon: ShoppingCart },
+    { path: "/dashboard", label: "Accueil", icon: Home },
+    { path: "/planning", label: "Planning", icon: Calendar },
+    { path: "/recipes", label: "Recettes", icon: ChefHat },
+    { path: "/stock", label: "Stock", icon: Package },
+    { path: "/shopping-list", label: "Courses", icon: ShoppingCart },
   ];
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
-    toast.success('Déconnexion réussie');
-    navigate('/');
+    logout();
+    navigate("/");
   };
 
   if (!isAuthenticated) {
@@ -71,7 +40,9 @@ const Navigation: React.FC = () => {
         <div className="flex flex-grow flex-col overflow-y-auto bg-white border-r border-gray-200">
           <div className="flex h-16 flex-shrink-0 items-center px-4 border-b border-gray-200">
             <ChefHat className="h-8 w-8 text-emerald-600" />
-            <span className="ml-2 text-xl font-bold text-gray-900">MiamPlanner</span>
+            <span className="ml-2 text-xl font-bold text-gray-900">
+              MiamPlanner
+            </span>
           </div>
 
           <div className="mt-8 flex flex-grow flex-col">
@@ -86,13 +57,15 @@ const Navigation: React.FC = () => {
                     to={item.path}
                     className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
-                        ? 'bg-emerald-100 text-emerald-700'
-                        : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
+                        ? "bg-emerald-100 text-emerald-700"
+                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                     }`}
                   >
                     <Icon
                       className={`mr-3 flex-shrink-0 h-5 w-5 ${
-                        isActive ? 'text-emerald-500' : 'text-gray-400 group-hover:text-gray-500'
+                        isActive
+                          ? "text-emerald-500"
+                          : "text-gray-400 group-hover:text-gray-500"
                       }`}
                     />
                     {item.label}
@@ -110,9 +83,11 @@ const Navigation: React.FC = () => {
                     </div>
                   </div>
                   <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-gray-700">{user?.nom || 'Utilisateur'}</p>
-                    <Link 
-                      to="/profile" 
+                    <p className="text-sm font-medium text-gray-700">
+                      {user?.nom || "Utilisateur"}
+                    </p>
+                    <Link
+                      to="/profile"
                       className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
                     >
                       Voir le profil
@@ -137,13 +112,17 @@ const Navigation: React.FC = () => {
         <div className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
           <div className="flex items-center">
             <ChefHat className="h-8 w-8 text-emerald-600" />
-            <span className="ml-2 text-xl font-bold text-gray-900">MiamPlanner</span>
+            <span className="ml-2 text-xl font-bold text-gray-900">
+              MiamPlanner
+            </span>
           </div>
           <div className="flex items-center space-x-3">
             <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
               <User className="h-4 w-4 text-emerald-600" />
             </div>
-            <span className="text-sm font-medium text-gray-700">{user?.nom || 'Utilisateur'}</span>
+            <span className="text-sm font-medium text-gray-700">
+              {user?.nom || "Utilisateur"}
+            </span>
           </div>
         </div>
 
@@ -160,8 +139,8 @@ const Navigation: React.FC = () => {
                   to={item.path}
                   className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
                     isActive
-                      ? 'text-emerald-600'
-                      : 'text-gray-400 hover:text-gray-600'
+                      ? "text-emerald-600"
+                      : "text-gray-400 hover:text-gray-600"
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -174,9 +153,9 @@ const Navigation: React.FC = () => {
             <Link
               to="/profile"
               className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
-                location.pathname === '/profile'
-                  ? 'text-emerald-600'
-                  : 'text-gray-400 hover:text-gray-600'
+                location.pathname === "/profile"
+                  ? "text-emerald-600"
+                  : "text-gray-400 hover:text-gray-600"
               }`}
             >
               <User className="h-5 w-5" />
