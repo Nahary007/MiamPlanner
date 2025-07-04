@@ -8,13 +8,17 @@ import {
   ShoppingCart,
   User,
   LogOut,
+  Sun,
+  Moon,
 } from "lucide-react";
 import { useAuth } from "../../contexts/AuthContext";
+import { useTheme } from "../../contexts/ThemeContext";
 
 const Navigation: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { user, isAuthenticated, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
 
   const navItems = [
     { path: "/dashboard", label: "Accueil", icon: Home },
@@ -37,12 +41,25 @@ const Navigation: React.FC = () => {
     <>
       {/* Desktop Navigation */}
       <nav className="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-        <div className="flex flex-grow flex-col overflow-y-auto bg-white border-r border-gray-200">
-          <div className="flex h-16 flex-shrink-0 items-center px-4 border-b border-gray-200">
-            <ChefHat className="h-8 w-8 text-emerald-600" />
-            <span className="ml-2 text-xl font-bold text-gray-900">
-              MiamPlanner
-            </span>
+        <div className="flex flex-grow flex-col overflow-y-auto bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700">
+          <div className="flex h-16 flex-shrink-0 items-center justify-between px-4 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center">
+              <ChefHat className="h-8 w-8 text-emerald-600" />
+              <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
+                MiamPlanner
+              </span>
+            </div>
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-md text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              title={theme === "dark" ? "Mode clair" : "Mode sombre"}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
           </div>
 
           <div className="mt-8 flex flex-grow flex-col">
@@ -57,15 +74,15 @@ const Navigation: React.FC = () => {
                     to={item.path}
                     className={`group flex items-center px-2 py-2 text-sm font-medium rounded-md transition-colors ${
                       isActive
-                        ? "bg-emerald-100 text-emerald-700"
-                        : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
+                        ? "bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400"
+                        : "text-gray-600 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 hover:text-gray-900 dark:hover:text-white"
                     }`}
                   >
                     <Icon
                       className={`mr-3 flex-shrink-0 h-5 w-5 ${
                         isActive
-                          ? "text-emerald-500"
-                          : "text-gray-400 group-hover:text-gray-500"
+                          ? "text-emerald-500 dark:text-emerald-400"
+                          : "text-gray-400 dark:text-gray-400 group-hover:text-gray-500 dark:group-hover:text-gray-300"
                       }`}
                     />
                     {item.label}
@@ -74,28 +91,28 @@ const Navigation: React.FC = () => {
               })}
             </nav>
 
-            <div className="flex-shrink-0 p-4 border-t border-gray-200">
+            <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-gray-700">
               <div className="group block">
                 <div className="flex items-center">
                   <div className="flex-shrink-0">
-                    <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
-                      <User className="h-4 w-4 text-emerald-600" />
+                    <div className="h-8 w-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+                      <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
                     </div>
                   </div>
                   <div className="ml-3 flex-1">
-                    <p className="text-sm font-medium text-gray-700">
+                    <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
                       {user?.nom || "Utilisateur"}
                     </p>
                     <Link
                       to="/profile"
-                      className="text-xs text-gray-500 hover:text-gray-700 transition-colors"
+                      className="text-xs text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
                     >
                       Voir le profil
                     </Link>
                   </div>
                   <button
                     onClick={handleLogout}
-                    className="ml-3 text-gray-400 hover:text-gray-600 transition-colors"
+                    className="ml-3 text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors"
                     title="Se déconnecter"
                   >
                     <LogOut className="h-4 w-4" />
@@ -109,26 +126,37 @@ const Navigation: React.FC = () => {
 
       {/* Mobile Top Header */}
       <div className="lg:hidden">
-        <div className="flex items-center justify-between h-16 px-4 bg-white border-b border-gray-200">
+        <div className="flex items-center justify-between h-16 px-4 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
           <div className="flex items-center">
             <ChefHat className="h-8 w-8 text-emerald-600" />
-            <span className="ml-2 text-xl font-bold text-gray-900">
+            <span className="ml-2 text-xl font-bold text-gray-900 dark:text-white">
               MiamPlanner
             </span>
           </div>
           <div className="flex items-center space-x-3">
-            <div className="h-8 w-8 rounded-full bg-emerald-100 flex items-center justify-center">
-              <User className="h-4 w-4 text-emerald-600" />
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-md text-gray-400 hover:text-gray-600 dark:text-gray-400 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              title={theme === "dark" ? "Mode clair" : "Mode sombre"}
+            >
+              {theme === "dark" ? (
+                <Sun className="h-5 w-5" />
+              ) : (
+                <Moon className="h-5 w-5" />
+              )}
+            </button>
+            <div className="h-8 w-8 rounded-full bg-emerald-100 dark:bg-emerald-900/30 flex items-center justify-center">
+              <User className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
             </div>
-            <span className="text-sm font-medium text-gray-700">
+            <span className="text-sm font-medium text-gray-700 dark:text-gray-200">
               {user?.nom || "Utilisateur"}
             </span>
           </div>
         </div>
 
         {/* Mobile Bottom Navigation */}
-        <div className="fixed bottom-0 left-0 right-0 bg-white border-t border-gray-200 lg:hidden z-50">
-          <div className="grid grid-cols-6 h-16">
+        <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700 lg:hidden z-50">
+          <div className="grid grid-cols-7 h-16">
             {navItems.map((item) => {
               const Icon = item.icon;
               const isActive = location.pathname === item.path;
@@ -139,8 +167,8 @@ const Navigation: React.FC = () => {
                   to={item.path}
                   className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
                     isActive
-                      ? "text-emerald-600"
-                      : "text-gray-400 hover:text-gray-600"
+                      ? "text-emerald-600 dark:text-emerald-400"
+                      : "text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                   }`}
                 >
                   <Icon className="h-5 w-5" />
@@ -149,18 +177,27 @@ const Navigation: React.FC = () => {
               );
             })}
 
-            {/* Profile/Logout */}
+            {/* Profile */}
             <Link
               to="/profile"
               className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
                 location.pathname === "/profile"
-                  ? "text-emerald-600"
-                  : "text-gray-400 hover:text-gray-600"
+                  ? "text-emerald-600 dark:text-emerald-400"
+                  : "text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
               }`}
             >
               <User className="h-5 w-5" />
               <span className="text-xs font-medium">Profil</span>
             </Link>
+
+            {/* Logout */}
+            <button
+              onClick={handleLogout}
+              className="flex flex-col items-center justify-center space-y-1 transition-colors text-gray-400 dark:text-gray-400 hover:text-red-600 dark:hover:text-red-400"
+            >
+              <LogOut className="h-5 w-5" />
+              <span className="text-xs font-medium">Sortir</span>
+            </button>
           </div>
         </div>
       </div>

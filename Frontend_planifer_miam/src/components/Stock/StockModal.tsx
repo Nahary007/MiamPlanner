@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { X } from 'lucide-react';
-import { useForm } from 'react-hook-form';
-import { stockAPI, ingredientsAPI } from '../../services/api';
-import type { StockItem, Ingredient } from '../../types';
-import toast from 'react-hot-toast';
+import React, { useEffect, useState } from "react";
+import { X } from "lucide-react";
+import { useForm } from "react-hook-form";
+import { stockAPI, ingredientsAPI } from "../../services/api";
+import type { StockItem, Ingredient } from "../../types";
+import toast from "react-hot-toast";
 
 interface StockModalProps {
   isOpen: boolean;
@@ -32,16 +32,16 @@ const StockModal: React.FC<StockModalProps> = ({
     if (isOpen) {
       fetchIngredients();
       if (stockItem) {
-        setValue('ingredient_id', stockItem.ingredient_id);
-        setValue('quantity', stockItem.quantity);
-        setValue('unit', stockItem.unit);
-        setValue('expirationDate', stockItem.expirationDate.split('T')[0]);
+        setValue("ingredient_id", stockItem.ingredient_id);
+        setValue("quantity", stockItem.quantity);
+        setValue("unit", stockItem.unit);
+        setValue("expirationDate", stockItem.expirationDate.split("T")[0]);
       } else {
         reset({
-          ingredient_id: '',
-          quantity: '',
-          unit: '',
-          expirationDate: '',
+          ingredient_id: "",
+          quantity: "",
+          unit: "",
+          expirationDate: "",
         });
       }
     }
@@ -52,7 +52,7 @@ const StockModal: React.FC<StockModalProps> = ({
       const data = await ingredientsAPI.getAll();
       setIngredients(data);
     } catch (error: any) {
-      toast.error('Erreur lors du chargement des ingrédients');
+      toast.error("Erreur lors du chargement des ingrédients");
     }
   };
 
@@ -74,7 +74,7 @@ const StockModal: React.FC<StockModalProps> = ({
 
       onSaved(savedItem);
     } catch (error: any) {
-      toast.error('Erreur lors de la sauvegarde');
+      toast.error("Erreur lors de la sauvegarde");
     }
   };
 
@@ -83,14 +83,17 @@ const StockModal: React.FC<StockModalProps> = ({
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-        <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={onClose} />
+        <div
+          className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+          onClick={onClose}
+        />
 
-        <div className="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+        <div className="inline-block align-bottom bg-white dark:bg-gray-800 rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
           <form onSubmit={handleSubmit(onSubmit)}>
-            <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+            <div className="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
               <div className="flex items-center justify-between mb-6">
-                <h3 className="text-lg font-medium text-gray-900">
-                  {stockItem ? 'Modifier l\'article' : 'Ajouter au stock'}
+                <h3 className="text-lg font-medium text-gray-900 dark:text-white">
+                  {stockItem ? "Modifier l'article" : "Ajouter au stock"}
                 </h3>
                 <button
                   type="button"
@@ -107,7 +110,9 @@ const StockModal: React.FC<StockModalProps> = ({
                     Ingrédient *
                   </label>
                   <select
-                    {...register('ingredient_id', { required: 'Ingrédient requis' })}
+                    {...register("ingredient_id", {
+                      required: "Ingrédient requis",
+                    })}
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                   >
                     <option value="">Choisir un ingrédient</option>
@@ -118,7 +123,9 @@ const StockModal: React.FC<StockModalProps> = ({
                     ))}
                   </select>
                   {errors.ingredient_id && (
-                    <p className="mt-1 text-sm text-red-600">{errors.ingredient_id.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.ingredient_id.message}
+                    </p>
                   )}
                 </div>
 
@@ -128,9 +135,12 @@ const StockModal: React.FC<StockModalProps> = ({
                       Quantité *
                     </label>
                     <input
-                      {...register('quantity', { 
-                        required: 'Quantité requise',
-                        min: { value: 0.1, message: 'La quantité doit être positive' }
+                      {...register("quantity", {
+                        required: "Quantité requise",
+                        min: {
+                          value: 0.1,
+                          message: "La quantité doit être positive",
+                        },
                       })}
                       type="number"
                       step="0.1"
@@ -138,7 +148,9 @@ const StockModal: React.FC<StockModalProps> = ({
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                     />
                     {errors.quantity && (
-                      <p className="mt-1 text-sm text-red-600">{errors.quantity.message}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.quantity.message}
+                      </p>
                     )}
                   </div>
 
@@ -147,13 +159,15 @@ const StockModal: React.FC<StockModalProps> = ({
                       Unité *
                     </label>
                     <input
-                      {...register('unit', { required: 'Unité requise' })}
+                      {...register("unit", { required: "Unité requise" })}
                       type="text"
                       placeholder="kg, g, L, ml..."
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                     />
                     {errors.unit && (
-                      <p className="mt-1 text-sm text-red-600">{errors.unit.message}</p>
+                      <p className="mt-1 text-sm text-red-600">
+                        {errors.unit.message}
+                      </p>
                     )}
                   </div>
                 </div>
@@ -163,12 +177,16 @@ const StockModal: React.FC<StockModalProps> = ({
                     Date de péremption *
                   </label>
                   <input
-                    {...register('expirationDate', { required: 'Date de péremption requise' })}
+                    {...register("expirationDate", {
+                      required: "Date de péremption requise",
+                    })}
                     type="date"
                     className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                   />
                   {errors.expirationDate && (
-                    <p className="mt-1 text-sm text-red-600">{errors.expirationDate.message}</p>
+                    <p className="mt-1 text-sm text-red-600">
+                      {errors.expirationDate.message}
+                    </p>
                   )}
                 </div>
               </div>
@@ -180,7 +198,7 @@ const StockModal: React.FC<StockModalProps> = ({
                 disabled={isSubmitting}
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
               >
-                {isSubmitting ? 'Sauvegarde...' : 'Sauvegarder'}
+                {isSubmitting ? "Sauvegarde..." : "Sauvegarder"}
               </button>
               <button
                 type="button"
