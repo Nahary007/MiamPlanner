@@ -59,7 +59,7 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
   const handleAddExistingRecipe = async (recipeId: number) => {
     try {
       const meal = await plannedMealsAPI.create({
-        recipe_id: recipeId,
+        recipeId: recipeId,
         date,
         mealType,
       });
@@ -82,7 +82,7 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
 
       // Then add it to the meal plan
       const meal = await plannedMealsAPI.create({
-        recipe_id: recipe.id,
+        recipeId: recipe.id,
         date,
         mealType,
       });

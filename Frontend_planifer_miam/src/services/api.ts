@@ -14,6 +14,15 @@ import type {
 } from '../types';
 import axios from "axios";
 
+// Ajoute le token JWT à chaque requête axios si présent
+axios.interceptors.request.use(config => {
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+  return config;
+});
+
 // Mock data for demo
 const mockIngredients: Ingredient[] = [
   { id: 1, name_ingredient: 'Tomates', unit: 'kg' },
@@ -285,16 +294,16 @@ export const stockAPI = {
 export const plannedMealsAPI = {
   getWeek: async (weekStart: string) => {
     // Ici, tu dois peut-être filtrer côté backend par semaine, ou tout récupérer et filtrer côté frontend
-    const res = await axios.get("/api/planned-meals");
+    const res = await axios.get("http://localhost:8000/api/planned-meals");
     // Filtrage côté frontend si besoin
     return res.data;
   },
   create: async (data: { recipeId: number; date: string; mealType: string }) => {
-    const res = await axios.post("/api/planned-meals", data);
+    const res = await axios.post("http://localhost:8000/api/planned-meals", data);
     return res.data;
   },
   delete: async (id: number) => {
-    await axios.delete(`/api/planned-meals/${id}`);
+    await axios.delete(`http://localhost:8000/api/planned-meals/${id}`);
   },
 };
 
