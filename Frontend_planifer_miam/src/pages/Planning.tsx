@@ -37,7 +37,8 @@ const Planning: React.FC = () => {
       const data = await plannedMealsAPI.getWeek(
         format(currentWeek, "yyyy-MM-dd"),
       );
-      setPlannedMeals(data);
+      // Correction ici : s'assurer que c'est bien un tableau
+      setPlannedMeals(Array.isArray(data) ? data : data.data || []);
     } catch (error: any) {
       toast.error("Erreur lors du chargement du planning");
     } finally {

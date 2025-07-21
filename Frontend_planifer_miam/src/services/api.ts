@@ -12,6 +12,7 @@ import type {
   DashboardStats,
   ShoppingListItem
 } from '../types';
+import axios from "axios";
 
 // Mock data for demo
 const mockIngredients: Ingredient[] = [
@@ -282,48 +283,18 @@ export const stockAPI = {
 
 // Planned Meals API
 export const plannedMealsAPI = {
-  getWeek: async (startDate: string): Promise<PlannedMeal[]> => {
-    await delay(600);
-    return mockPlannedMeals;
+  getWeek: async (weekStart: string) => {
+    // Ici, tu dois peut-être filtrer côté backend par semaine, ou tout récupérer et filtrer côté frontend
+    const res = await axios.get("/api/planned-meals");
+    // Filtrage côté frontend si besoin
+    return res.data;
   },
-  
-  create: async (data: PlannedMealForm): Promise<PlannedMeal> => {
-    await delay(800);
-    const recipe = mockRecipes.find(r => r.id === data.recipe_id);
-    if (!recipe) throw new Error('Recipe not found');
-    
-    const newMeal: PlannedMeal = {
-      id: Math.max(...mockPlannedMeals.map(m => m.id)) + 1,
-      user_id: 1,
-      recipe_id: data.recipe_id,
-      recipe,
-      date: data.date,
-      mealType: data.mealType
-    };
-    mockPlannedMeals.push(newMeal);
-    return newMeal;
+  create: async (data: { recipeId: number; date: string; mealType: string }) => {
+    const res = await axios.post("/api/planned-meals", data);
+    return res.data;
   },
-  
-  update: async (id: number, data: Partial<PlannedMealForm>): Promise<PlannedMeal> => {
-    await delay(800);
-    const index = mockPlannedMeals.findIndex(m => m.id === id);
-    if (index === -1) throw new Error('Planned meal not found');
-    
-    const updatedMeal = {
-      ...mockPlannedMeals[index],
-      ...data,
-      recipe: data.recipe_id ? 
-        mockRecipes.find(r => r.id === data.recipe_id)! : 
-        mockPlannedMeals[index].recipe
-    };
-    
-    mockPlannedMeals[index] = updatedMeal;
-    return updatedMeal;
-  },
-  
-  delete: async (id: number): Promise<void> => {
-    await delay(500);
-    mockPlannedMeals = mockPlannedMeals.filter(m => m.id !== id);
+  delete: async (id: number) => {
+    await axios.delete(`/api/planned-meals/${id}`);
   },
 };
 
