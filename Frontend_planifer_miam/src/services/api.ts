@@ -292,18 +292,43 @@ export const stockAPI = {
 
 // Planned Meals API
 export const plannedMealsAPI = {
-  getWeek: async (weekStart: string) => {
-    // Ici, tu dois peut-être filtrer côté backend par semaine, ou tout récupérer et filtrer côté frontend
-    const res = await axios.get("http://localhost:8000/api/planned-meals");
-    // Filtrage côté frontend si besoin
-    return res.data;
+  getWeek: async (weekStart: string): Promise<PlannedMeal[]> => {
+    try {
+      // Calculer la fin de semaine (6 jours après le début)
+      const startDate = new Date(weekStart);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 6);
+      
+      const res = await axios.get("http://localhost:8000/api/planned-meals", {
+        params: {
+          start_date: weekStart,
+          end_date: endDate.toISOString().split('T')[0]
+        }
+      });
+      return res.data;
+    } catch (error) {
+      console.error('Erreur lors de la récupération des repas planifiés:', error);
+      throw error;
+    }
   },
-  create: async (data: { recipeId: number; date: string; mealType: string }) => {
-    const res = await axios.post("http://localhost:8000/api/planned-meals", data);
-    return res.data;
+  
+  create: async (data: { recipeId: number; date: string; mealType: string }): Promise<PlannedMeal> => {
+    try {
+      const res = await axios.post("http://localhost:8000/api/planned-meals", data);
+      return res.data;
+    } catch (error) {
+      console.error('Erreur lors de la création du repas planifié:', error);
+      throw error;
+    }
   },
-  delete: async (id: number) => {
-    await axios.delete(`http://localhost:8000/api/planned-meals/${id}`);
+  
+  delete: async (id: number): Promise<void> => {
+    try {
+      await axios.delete(`http://localhost:8000/api/planned-meals/${id}`);
+    } catch (error) {
+      console.error('Erreur lors de la suppression du repas planifié:', error);
+      throw error;
+    }
   },
 };
 

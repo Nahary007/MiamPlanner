@@ -58,19 +58,24 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
 
   const handleAddExistingRecipe = async (recipeId: number) => {
     try {
+      console.log('Adding existing recipe:', recipeId, 'for date:', date, 'mealType:', mealType);
       const meal = await plannedMealsAPI.create({
         recipeId: recipeId,
         date,
         mealType,
       });
+      console.log('Meal created successfully:', meal);
       onMealAdded(meal);
+      onClose();
     } catch (error: any) {
+      console.error('Error adding meal:', error);
       toast.error("Erreur lors de l'ajout du repas");
     }
   };
 
   const handleCreateAndAddRecipe = async (data: any) => {
     try {
+      console.log('Creating new recipe and adding meal:', data);
       // Create recipe first
       const recipe = await recipesAPI.create({
         name_recipe: data.name_recipe,
@@ -80,6 +85,8 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
         ingredients: [], // For now, we'll add ingredients separately
       });
 
+      console.log('Recipe created:', recipe);
+      
       // Then add it to the meal plan
       const meal = await plannedMealsAPI.create({
         recipeId: recipe.id,
@@ -87,10 +94,13 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
         mealType,
       });
 
+      console.log('Meal added to plan:', meal);
       onMealAdded(meal);
       reset();
       setShowAddRecipe(false);
+      onClose();
     } catch (error: any) {
+      console.error('Error creating recipe and adding meal:', error);
       toast.error("Erreur lors de la création de la recette");
     }
   };
