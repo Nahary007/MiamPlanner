@@ -16,7 +16,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 class PlannedMealController extends AbstractController
 {
     #[Route('', methods: ['GET'])]
-    public function getAll(PlannedMealRepository $plannedMealRepository): JsonResponse
+    public function getAll(Request $request, PlannedMealRepository $plannedMealRepository): JsonResponse
     {
         /** @var User|null $user */
         $user = $this->getUser();
@@ -25,7 +25,19 @@ class PlannedMealController extends AbstractController
             return $this->json(['error' => 'Utilisateur non authentifié'], 401);
         }
 
-        $meals = $plannedMealRepository->findBy(['user' => $user]);
+        // Récupérer les paramètres de date pour filtrer par semaine
+        $startDate = $request->query->get('start_date');
+        $endDate = $request->query->get('end_date');
+        
+        if ($startDate && $endDate) {
+            $meals = $plannedMealRepository->findByUserAndWeek(
+                $user, 
+                new \DateTime($startDate), 
+                new \DateTime($endDate)
+            );
+        } else {
+            $meals = $plannedMealRepository->findBy(['user' => $user]);
+        }
 
         return $this->json($meals, 200, [], ['groups' => 'meal:read']);
     }

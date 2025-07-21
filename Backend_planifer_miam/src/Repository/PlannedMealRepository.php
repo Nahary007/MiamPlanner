@@ -15,4 +15,18 @@ class PlannedMealRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, PlannelMealEntity::class);
     }
+
+    public function findByUserAndWeek($user, $startDate, $endDate)
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.user = :user')
+            ->andWhere('p.date >= :startDate')
+            ->andWhere('p.date <= :endDate')
+            ->setParameter('user', $user)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->orderBy('p.date', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
 }
