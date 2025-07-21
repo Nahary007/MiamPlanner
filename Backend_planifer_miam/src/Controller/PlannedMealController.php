@@ -20,11 +20,11 @@ class PlannedMealController extends AbstractController
     {
         /** @var User|null $user */
         $user = $this->getUser();
-        
+
         if (!$user instanceof User) {
             return $this->json(['error' => 'Utilisateur non authentifié'], 401);
         }
-        
+
         $meals = $plannedMealRepository->findBy(['user' => $user]);
 
         return $this->json($meals, 200, [], ['groups' => 'meal:read']);
@@ -34,39 +34,56 @@ class PlannedMealController extends AbstractController
     public function create(Request $request, EntityManagerInterface $em, RecipeRepository $recipeRepo): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
-        
+
         /** @var User|null $user */
         $user = $this->getUser();
-        
+
         if (!$user instanceof User) {
             return $this->json(['error' => 'Utilisateur non authentifié'], 401);
         }
 
-        $recipe = $recipeRepo->find($data['recipe_id']);
+        // Champs en camelCase venant du frontend
+        if (!isset($data['recipeId'], $data['date'], $data['mealType'])) {
+            return $this->json(['error' => 'Champs requis manquants'], 400);
+        }
+
+        $recipe = $recipeRepo->find($data['recipeId']);
         if (!$recipe) {
             return $this->json(['error' => 'Recette introuvable'], 404);
         }
 
-        // Validation du champ meal_type s'il est fourni
-        if (isset($data['meal_type']) && !in_array($data['meal_type'], ['breakfast', 'lunch', 'dinner', 'snack'])) {
+        if (!in_array($data['mealType'], ['breakfast', 'lunch', 'dinner'], true)) {
             return $this->json(['error' => 'Type de repas invalide'], 400);
         }
 
         $meal = new PlannelMealEntity();
         $meal->setUser($user);
         $meal->setRecipe($recipe);
-        $meal->setDate(new \DateTime($data['planned_date']));
-        
-        // Définir le type de repas si fourni, sinon valeur par défaut
-        if (isset($data['meal_type'])) {
-            $meal->setMealType($data['meal_type']);
-        } else {
-            $meal->setMealType('lunch'); // valeur par défaut
-        }
+        $meal->setDate(new \DateTime($data['date']));
+        $meal->setMealType($data['mealType']);
 
         $em->persist($meal);
         $em->flush();
 
         return $this->json($meal, 201, [], ['groups' => 'meal:read']);
+    }
+
+    #[Route('/{id}', methods: ['DELETE'])]
+    public function delete(int $id, EntityManagerInterface $em): JsonResponse
+    {
+        $meal = $em->getRepository(PlannelMealEntity::class)->find($id);
+
+        if (!$meal) {
+            return $this->json(['error' => 'Repas non trouvé'], 404);
+        }
+
+        if ($meal->getUser() !== $this->getUser()) {
+            return $this->json(['error' => 'Accès interdit'], 403);
+        }
+
+        $em->remove($meal);
+        $em->flush();
+
+        return $this->json(['message' => 'Repas supprimé avec succès']);
     }
 }
