@@ -230,6 +230,7 @@ export const stockAPI = {
 // Planned Meals API
 export const plannedMealsAPI = {
 <<<<<<< HEAD
+<<<<<<< HEAD
   getWeek: async (weekStart: string): Promise<PlannedMeal[]> => {
     try {
       // Calculer la fin de semaine (6 jours après le début)
@@ -268,6 +269,8 @@ export const plannedMealsAPI = {
       throw error;
     }
 =======
+=======
+>>>>>>> 7a0c6c4b50ea417b5582ee9d71cae5bc5c2fd304
   getAll: async (): Promise<PlannedMeal[]> => {
     const res = await axios.get('http://localhost:8000/api/planned_meals');
     return res.data;
@@ -285,7 +288,10 @@ export const plannedMealsAPI = {
 
   delete: async (id: number): Promise<void> => {
     await axios.delete(`http://localhost:8000/api/planned_meals/delete/${id}`);
+<<<<<<< HEAD
 >>>>>>> dev-Backend
+=======
+>>>>>>> 7a0c6c4b50ea417b5582ee9d71cae5bc5c2fd304
   },
 };
 
