@@ -29,7 +29,7 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       if (ingredient) {
-        setValue("name_ingredient", ingredient.name_ingredient);
+        setValue("name_ingredient", ingredient.nameIngredient);
         setValue("unit", ingredient.unit);
       } else {
         reset({

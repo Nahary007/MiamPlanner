@@ -110,7 +110,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
 
   const filteredIngredients = ingredients.filter(
     ingredient =>
-      (ingredient.name_ingredient ?? "").toLowerCase().includes(ingredientSearch.toLowerCase())
+      (ingredient.nameIngredient ?? "").toLowerCase().includes(ingredientSearch.toLowerCase())
   );
 
   if (!isOpen) return null;
@@ -239,7 +239,7 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
                             <option value="">Choisir un ingrédient</option>
                             {filteredIngredients.map((ingredient) => (
                               <option key={ingredient.id} value={ingredient.id}>
-                                {ingredient.name_ingredient} ({ingredient.unit})
+                                {ingredient.nameIngredient} ({ingredient.unit})
                               </option>
                             ))}
                           </select>

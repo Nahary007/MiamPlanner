@@ -86,8 +86,8 @@ const Ingredients: React.FC = () => {
 
   const filteredIngredients = ingredients.filter(
     ingredient =>
-      ingredient.name_ingredient &&
-      ingredient.name_ingredient.toLowerCase().includes(searchQuery.toLowerCase())
+      ingredient.nameIngredient &&
+      ingredient.nameIngredient.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
@@ -183,7 +183,7 @@ const Ingredients: React.FC = () => {
               >
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-gray-900 dark:text-white text-base md:text-lg">
-                    {ingredient.name_ingredient}
+                    {ingredient.nameIngredient}
                   </h3>
                   <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
                     Unité: <span className="font-medium">{ingredient.unit}</span>
