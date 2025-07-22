@@ -160,175 +160,92 @@ export const dashboardAPI = {
 // Recipes API
 export const recipesAPI = {
   getAll: async (page = 1, search = ''): Promise<{ data: Recipe[]; total: number }> => {
-    await delay(600);
-    let filtered = mockRecipes;
-    if (search) {
-      filtered = mockRecipes.filter(recipe => 
-        recipe.name_recipe.toLowerCase().includes(search.toLowerCase())
-      );
-    }
-    return { data: filtered, total: filtered.length };
+    const params: any = {};
+    if (search) params.search = search;
+    // Ajoute la pagination si ton backend la gère
+    const res = await axios.get('http://localhost:8000/api/recipes', { params });
+    return { data: res.data, total: res.data.length };
   },
-  
+
   getById: async (id: number): Promise<Recipe> => {
-    await delay(400);
-    const recipe = mockRecipes.find(r => r.id === id);
-    if (!recipe) throw new Error('Recipe not found');
-    return recipe;
+    const res = await axios.get(`http://localhost:8000/api/recipes/${id}`);
+    return res.data;
   },
-  
+
   create: async (data: RecipeForm): Promise<Recipe> => {
-    await delay(800);
-    const newRecipe: Recipe = {
-      id: Math.max(...mockRecipes.map(r => r.id)) + 1,
-      name_recipe: data.name_recipe,
-      description: data.description,
-      instructions: data.instructions,
-      servings: data.servings,
-      ingredients: data.ingredients.map((ing, index) => ({
-        id: index + 1,
-        quantity: ing.quantity,
-        ingredient: mockIngredients.find(i => i.id === ing.ingredient_id)!
-      }))
-    };
-    mockRecipes.push(newRecipe);
-    return newRecipe;
+    const res = await axios.post('http://localhost:8000/api/recipes', data);
+    return res.data;
   },
-  
+
   update: async (id: number, data: Partial<RecipeForm>): Promise<Recipe> => {
-    await delay(800);
-    const index = mockRecipes.findIndex(r => r.id === id);
-    if (index === -1) throw new Error('Recipe not found');
-    
-    const updatedRecipe = {
-      ...mockRecipes[index],
-      ...data,
-      ingredients: data.ingredients?.map((ing, idx) => ({
-        id: idx + 1,
-        quantity: ing.quantity,
-        ingredient: mockIngredients.find(i => i.id === ing.ingredient_id)!
-      })) || mockRecipes[index].ingredients
-    };
-    
-    mockRecipes[index] = updatedRecipe;
-    return updatedRecipe;
+    const res = await axios.put(`http://localhost:8000/api/recipes/${id}`, data);
+    return res.data;
   },
-  
+
   delete: async (id: number): Promise<void> => {
-    await delay(500);
-    mockRecipes = mockRecipes.filter(r => r.id !== id);
+    await axios.delete(`http://localhost:8000/api/recipes/${id}`);
   },
 };
 
 // Ingredients API
 export const ingredientsAPI = {
   getAll: async (): Promise<Ingredient[]> => {
-    await delay(400);
-    return mockIngredients;
+    const res = await axios.get('http://localhost:8000/api/ingredients');
+    return res.data;
   },
-  
+
   search: async (query: string): Promise<Ingredient[]> => {
-    await delay(300);
-    return mockIngredients.filter(ing => 
-      ing.name_ingredient.toLowerCase().includes(query.toLowerCase())
-    );
+    const res = await axios.get('http://localhost:8000/api/ingredients', { params: { search: query } });
+    return res.data;
   },
 };
 
 // Stock API
 export const stockAPI = {
   getAll: async (): Promise<StockItem[]> => {
-    await delay(600);
-    return mockStockItems;
+    const res = await axios.get('http://localhost:8000/api/stock');
+    return res.data;
   },
-  
+
   create: async (data: StockForm): Promise<StockItem> => {
-    await delay(800);
-    const newItem: StockItem = {
-      id: Math.max(...mockStockItems.map(s => s.id)) + 1,
-      user_id: 1,
-      ingredient_id: data.ingredient_id,
-      ingredient: mockIngredients.find(i => i.id === data.ingredient_id)!,
-      quantity: data.quantity,
-      unit: data.unit,
-      expirationDate: data.expirationDate
-    };
-    mockStockItems.push(newItem);
-    return newItem;
+    const res = await axios.post('http://localhost:8000/api/stock', data);
+    return res.data;
   },
-  
+
   update: async (id: number, data: Partial<StockForm>): Promise<StockItem> => {
-    await delay(800);
-    const index = mockStockItems.findIndex(s => s.id === id);
-    if (index === -1) throw new Error('Stock item not found');
-    
-    const updatedItem = {
-      ...mockStockItems[index],
-      ...data,
-      ingredient: data.ingredient_id ? 
-        mockIngredients.find(i => i.id === data.ingredient_id)! : 
-        mockStockItems[index].ingredient
-    };
-    
-    mockStockItems[index] = updatedItem;
-    return updatedItem;
+    const res = await axios.put(`http://localhost:8000/api/stock/${id}`, data);
+    return res.data;
   },
-  
+
   delete: async (id: number): Promise<void> => {
-    await delay(500);
-    mockStockItems = mockStockItems.filter(s => s.id !== id);
+    await axios.delete(`http://localhost:8000/api/stock/${id}`);
   },
-  
+
   getExpiring: async (days = 3): Promise<StockItem[]> => {
-    await delay(400);
-    const cutoffDate = new Date();
-    cutoffDate.setDate(cutoffDate.getDate() + days);
-    
-    return mockStockItems.filter(item => 
-      new Date(item.expirationDate) <= cutoffDate
-    );
+    const res = await axios.get('http://localhost:8000/api/stock/expiring', { params: { days } });
+    return res.data;
   },
 };
 
 // Planned Meals API
 export const plannedMealsAPI = {
+  getAll: async (): Promise<PlannedMeal[]> => {
+    const res = await axios.get('http://localhost:8000/api/planned_meals');
+    return res.data;
+  },
+
   getWeek: async (weekStart: string): Promise<PlannedMeal[]> => {
-    try {
-      // Calculer la fin de semaine (6 jours après le début)
-      const startDate = new Date(weekStart);
-      const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 6);
-      
-      const res = await axios.get("http://localhost:8000/api/planned-meals", {
-        params: {
-          start_date: weekStart,
-          end_date: endDate.toISOString().split('T')[0]
-        }
-      });
-      return res.data;
-    } catch (error) {
-      console.error('Erreur lors de la récupération des repas planifiés:', error);
-      throw error;
-    }
+    const res = await axios.get('http://localhost:8000/api/planned_meals/week', { params: { start: weekStart } });
+    return res.data;
   },
-  
+
   create: async (data: { recipeId: number; date: string; mealType: string }): Promise<PlannedMeal> => {
-    try {
-      const res = await axios.post("http://localhost:8000/api/planned-meals", data);
-      return res.data;
-    } catch (error) {
-      console.error('Erreur lors de la création du repas planifié:', error);
-      throw error;
-    }
+    const res = await axios.post('http://localhost:8000/api/planned_meals/create', data);
+    return res.data;
   },
-  
+
   delete: async (id: number): Promise<void> => {
-    try {
-      await axios.delete(`http://localhost:8000/api/planned-meals/${id}`);
-    } catch (error) {
-      console.error('Erreur lors de la suppression du repas planifié:', error);
-      throw error;
-    }
+    await axios.delete(`http://localhost:8000/api/planned_meals/delete/${id}`);
   },
 };
 
