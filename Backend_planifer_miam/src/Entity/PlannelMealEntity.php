@@ -8,6 +8,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class PlannelMealEntity
 {
+    #[Groups(['meal:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
