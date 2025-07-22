@@ -198,6 +198,20 @@ export const ingredientsAPI = {
     const res = await axios.get('http://localhost:8000/api/ingredients', { params: { search: query } });
     return res.data;
   },
+
+  create: async (data: { name_ingredient: string; unit: string }): Promise<Ingredient> => {
+    const res = await axios.post('http://localhost:8000/api/ingredients', data);
+    return res.data;
+  },
+
+  update: async (id: number, data: { name_ingredient: string; unit: string }): Promise<Ingredient> => {
+    const res = await axios.put(`http://localhost:8000/api/ingredients/${id}`, data);
+    return res.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await axios.delete(`http://localhost:8000/api/ingredients/${id}`);
+  },
 };
 
 // Stock API

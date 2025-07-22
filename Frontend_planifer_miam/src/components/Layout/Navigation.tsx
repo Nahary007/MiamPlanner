@@ -5,6 +5,7 @@ import {
   Calendar,
   ChefHat,
   Package,
+  Layers,
   ShoppingCart,
   User,
   LogOut,
@@ -24,6 +25,7 @@ const Navigation: React.FC = () => {
     { path: "/dashboard", label: "Accueil", icon: Home },
     { path: "/planning", label: "Planning", icon: Calendar },
     { path: "/recipes", label: "Recettes", icon: ChefHat },
+    { path: "/ingredients", label: "Ingrédients", icon: Layers },
     { path: "/stock", label: "Stock", icon: Package },
     { path: "/shopping-list", label: "Courses", icon: ShoppingCart },
   ];
