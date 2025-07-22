@@ -34,19 +34,19 @@ const Planning: React.FC = () => {
   const fetchPlannedMeals = async () => {
     try {
       setLoading(true);
-      const weekStart = format(currentWeek, "yyyy-MM-dd");
-      console.log('Fetching planned meals for week starting:', weekStart);
-      
-      const data = await plannedMealsAPI.getWeek(weekStart);
-      console.log('Received planned meals data:', data);
-      
-      // S'assurer que c'est bien un tableau
-      const mealsArray = Array.isArray(data) ? data : (data?.data || []);
-      setPlannedMeals(mealsArray);
+      const data = await plannedMealsAPI.getWeek(
+        format(currentWeek, "yyyy-MM-dd"),
+      );
+      // Correction ici : s'assurer que c'est bien un tableau
+      if (Array.isArray(data)) {
+        setPlannedMeals(data);
+      } else if (data && Array.isArray((data as any).data)) {
+        setPlannedMeals((data as any).data);
+      } else {
+        setPlannedMeals([]);
+      }
     } catch (error: any) {
-      console.error('Error fetching planned meals:', error);
       toast.error("Erreur lors du chargement du planning");
-      setPlannedMeals([]); // Set empty array on error
     } finally {
       setLoading(false);
     }
@@ -56,41 +56,32 @@ const Planning: React.FC = () => {
     day: string,
     mealType: "breakfast" | "lunch" | "dinner",
   ) => {
-    console.log('Adding meal for day:', day, 'mealType:', mealType);
     setSelectedDay(day);
     setSelectedMealType(mealType);
     setIsAddModalOpen(true);
   };
 
   const handleMealAdded = (meal: PlannedMeal) => {
-    console.log('Meal added:', meal);
     setPlannedMeals((prev) => [...prev, meal]);
     setIsAddModalOpen(false);
     toast.success("Repas ajouté avec succès");
   };
 
   const handleDeleteMeal = async (mealId: number) => {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer ce repas ?")) {
-      return;
-    }
-    
     try {
-      console.log('Deleting meal with ID:', mealId);
       await plannedMealsAPI.delete(mealId);
       setPlannedMeals((prev) => prev.filter((meal) => meal.id !== mealId));
       toast.success("Repas supprimé");
     } catch (error: any) {
-      console.error('Error deleting meal:', error);
       toast.error("Erreur lors de la suppression");
     }
   };
 
   const getMealForDayAndType = (day: Date, mealType: string) => {
-    const meal = plannedMeals.find(
+    return plannedMeals.find(
       (meal) =>
         isSameDay(new Date(meal.date), day) && meal.mealType === mealType,
     );
-    return meal;
   };
 
   const navigateWeek = (direction: "prev" | "next") => {

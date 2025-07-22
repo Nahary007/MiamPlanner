@@ -13,10 +13,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/stock')]
 class StockItemController extends AbstractController
 {
-    #[Route('', methods: ['GET'])]
+    #[Route('/api/stock', methods: ['GET'])]
     public function getAll(StockItemRepository $stockItemRepository): JsonResponse
     {
         /** @var User $user */
@@ -31,7 +30,7 @@ class StockItemController extends AbstractController
         return $this->json($items, 200, [], ['groups' => 'stock:read']);
     }
 
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/stock', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse {
         $data = json_decode($request->getContent(), true);
         
