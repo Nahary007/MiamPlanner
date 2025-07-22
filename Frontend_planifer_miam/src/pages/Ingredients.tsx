@@ -84,8 +84,10 @@ const Ingredients: React.FC = () => {
     setIsModalOpen(false);
   };
 
-  const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.name_ingredient.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredIngredients = ingredients.filter(
+    ingredient =>
+      ingredient.name_ingredient &&
+      ingredient.name_ingredient.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (

@@ -103,9 +103,9 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
                     placeholder="Ex: Tomates, Oignons, Ail..."
                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                   />
-                  {errors.name_ingredient && (
+                  {errors.name_ingredient?.message && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.name_ingredient.message}
+                      {String(errors.name_ingredient.message)}
                     </p>
                   )}
                 </div>
@@ -137,9 +137,9 @@ const IngredientModal: React.FC<IngredientModalProps> = ({
                     <option value="sachet">Sachet</option>
                     <option value="tranche">Tranche</option>
                   </select>
-                  {errors.unit && (
+                  {errors.unit?.message && (
                     <p className="mt-1 text-sm text-red-600">
-                      {errors.unit.message}
+                      {String(errors.unit.message)}
                     </p>
                   )}
                 </div>

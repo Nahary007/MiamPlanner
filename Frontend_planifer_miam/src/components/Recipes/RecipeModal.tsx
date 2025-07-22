@@ -108,10 +108,9 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
     }
   };
 
-  const filteredIngredients = ingredients.filter((ingredient) =>
-    ingredient.name_ingredient
-      .toLowerCase()
-      .includes(ingredientSearch.toLowerCase()),
+  const filteredIngredients = ingredients.filter(
+    ingredient =>
+      (ingredient.name_ingredient ?? "").toLowerCase().includes(ingredientSearch.toLowerCase())
   );
 
   if (!isOpen) return null;
