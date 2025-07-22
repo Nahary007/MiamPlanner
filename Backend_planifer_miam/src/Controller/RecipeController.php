@@ -32,8 +32,10 @@ class RecipeController extends AbstractController
         $data = json_decode($request->getContent(), true);
 
         $recipe = new Recipe();
-        $recipe->setNameRecipe($data['name'] ?? '');
+        $recipe->setNameRecipe($data['name_recipe'] ?? '');
         $recipe->setDescription($data['description'] ?? '');
+        $recipe->setInstructions($data['instructions'] ?? '');
+        $recipe->setServings($data['servings'] ?? 1);
 
         $em->persist($recipe);
         $em->flush();

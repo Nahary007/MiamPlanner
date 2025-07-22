@@ -119,7 +119,7 @@ const Recipes: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {[...Array(6)].map((_, i) => (
             <div
-              key={i}
+              key={`loading-skeleton-${i}`}
               className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 animate-pulse"
             >
               <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
@@ -137,7 +137,7 @@ const Recipes: React.FC = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-6 mb-8">
             {recipes.map((recipe) => (
               <div
-                key={recipe.id}
+                key={`recipe-${recipe.id}`}
                 className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-4 md:p-6 hover:shadow-md transition-shadow"
               >
                 <div className="flex items-start justify-between mb-4">
@@ -187,9 +187,9 @@ const Recipes: React.FC = () => {
             <div className="flex justify-center">
               <nav className="flex flex-wrap justify-center gap-1 md:gap-2">
                 {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                  (page) => (
+                  (page, index) => (
                     <button
-                      key={page}
+                      key={`pagination-page-${index}-${page}`}
                       onClick={() => setCurrentPage(page)}
                       className={`px-2 md:px-3 py-2 rounded-md text-sm font-medium transition-colors ${
                         currentPage === page
