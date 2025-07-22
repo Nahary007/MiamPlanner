@@ -17,7 +17,7 @@ export interface Recipe {
 
 export interface Ingredient {
   id: number;
-  name_ingredient: string;
+  nameIngredient: string;
   unit: string;
 }
 

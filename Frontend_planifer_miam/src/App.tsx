@@ -14,6 +14,7 @@ import Dashboard from "./pages/Dashboard";
 import Planning from "./pages/Planning";
 import Recipes from "./pages/Recipes";
 import Stock from "./pages/Stock";
+import Ingredients from "./pages/Ingredients";
 import ShoppingList from "./pages/ShoppingList";
 import Profile from "./pages/Profile";
 
@@ -80,6 +81,14 @@ function App() {
                 element={
                   <ProtectedRoute>
                     <Stock />
+                  </ProtectedRoute>
+                }
+              />
+              <Route
+                path="/ingredients"
+                element={
+                  <ProtectedRoute>
+                    <Ingredients />
                   </ProtectedRoute>
                 }
               />

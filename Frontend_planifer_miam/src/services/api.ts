@@ -25,16 +25,16 @@ axios.interceptors.request.use(config => {
 
 // Mock data for demo
 const mockIngredients: Ingredient[] = [
-  { id: 1, name_ingredient: 'Tomates', unit: 'kg' },
-  { id: 2, name_ingredient: 'Oignons', unit: 'kg' },
-  { id: 3, name_ingredient: 'Ail', unit: 'gousses' },
-  { id: 4, name_ingredient: 'Pâtes', unit: 'g' },
-  { id: 5, name_ingredient: 'Riz', unit: 'g' },
-  { id: 6, name_ingredient: 'Poulet', unit: 'kg' },
-  { id: 7, name_ingredient: 'Bœuf', unit: 'kg' },
-  { id: 8, name_ingredient: 'Carottes', unit: 'kg' },
-  { id: 9, name_ingredient: 'Pommes de terre', unit: 'kg' },
-  { id: 10, name_ingredient: 'Lait', unit: 'L' },
+  { id: 1, nameIngredient: 'Tomates', unit: 'kg' },
+  { id: 2, nameIngredient: 'Oignons', unit: 'kg' },
+  { id: 3, nameIngredient: 'Ail', unit: 'gousses' },
+  { id: 4, nameIngredient: 'Pâtes', unit: 'g' },
+  { id: 5, nameIngredient: 'Riz', unit: 'g' },
+  { id: 6, nameIngredient: 'Poulet', unit: 'kg' },
+  { id: 7, nameIngredient: 'Bœuf', unit: 'kg' },
+  { id: 8, nameIngredient: 'Carottes', unit: 'kg' },
+  { id: 9, nameIngredient: 'Pommes de terre', unit: 'kg' },
+  { id: 10, nameIngredient: 'Lait', unit: 'L' },
 ];
 
 let mockRecipes: Recipe[] = [
@@ -197,6 +197,20 @@ export const ingredientsAPI = {
   search: async (query: string): Promise<Ingredient[]> => {
     const res = await axios.get('http://localhost:8000/api/ingredients', { params: { search: query } });
     return res.data;
+  },
+
+  create: async (data: { name_ingredient: string; unit: string }): Promise<Ingredient> => {
+    const res = await axios.post('http://localhost:8000/api/ingredients', data);
+    return res.data;
+  },
+
+  update: async (id: number, data: { name_ingredient: string; unit: string }): Promise<Ingredient> => {
+    const res = await axios.put(`http://localhost:8000/api/ingredients/${id}`, data);
+    return res.data;
+  },
+
+  delete: async (id: number): Promise<void> => {
+    await axios.delete(`http://localhost:8000/api/ingredients/${id}`);
   },
 };
 

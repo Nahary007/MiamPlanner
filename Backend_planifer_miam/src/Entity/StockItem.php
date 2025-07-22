@@ -3,10 +3,12 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 class StockItem
 {
+    #[Groups(['stock:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -16,16 +18,20 @@ class StockItem
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
+    #[Groups(['stock:read'])]
     #[ORM\ManyToOne(inversedBy: 'stockItems')]
     #[ORM\JoinColumn(nullable: false)]
     private Ingredient $ingredient;
 
+    #[Groups(['stock:read'])]
     #[ORM\Column]
     private float $quantity;
 
+    #[Groups(['stock:read'])]
     #[ORM\Column(length: 100)]
     private string $unit;
 
+    #[Groups(['stock:read'])]
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $expirationDate;
 
