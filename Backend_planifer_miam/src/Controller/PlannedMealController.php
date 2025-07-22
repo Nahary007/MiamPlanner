@@ -14,18 +14,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class PlannedMealController extends AbstractController
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    #[Route('', methods: ['GET'])]
-    public function getAll(Request $request, PlannedMealRepository $plannedMealRepository): JsonResponse
-=======
     #[Route('/api/planned_meals', name: 'api_getall', methods: ['GET'])]
     public function getAll(PlannedMealRepository $plannedMealRepository): JsonResponse
->>>>>>> dev-Backend
-=======
-    #[Route('/api/planned_meals', name: 'api_getall', methods: ['GET'])]
-    public function getAll(PlannedMealRepository $plannedMealRepository): JsonResponse
->>>>>>> 7a0c6c4b50ea417b5582ee9d71cae5bc5c2fd304
     {
         /** @var User|null $user */
         $user = $this->getUser();
