@@ -34,6 +34,7 @@ const Planning: React.FC = () => {
   const fetchPlannedMeals = async () => {
     try {
       setLoading(true);
+<<<<<<< HEAD
       const weekStart = format(currentWeek, "yyyy-MM-dd");
       console.log('Fetching planned meals for week starting:', weekStart);
       
@@ -43,6 +44,19 @@ const Planning: React.FC = () => {
       // S'assurer que c'est bien un tableau
       const mealsArray = Array.isArray(data) ? data : (data?.data || []);
       setPlannedMeals(mealsArray);
+=======
+      const data = await plannedMealsAPI.getWeek(
+        format(currentWeek, "yyyy-MM-dd"),
+      );
+      // Correction ici : s'assurer que c'est bien un tableau
+      if (Array.isArray(data)) {
+        setPlannedMeals(data);
+      } else if (data && Array.isArray((data as any).data)) {
+        setPlannedMeals((data as any).data);
+      } else {
+        setPlannedMeals([]);
+      }
+>>>>>>> dev-Backend
     } catch (error: any) {
       console.error('Error fetching planned meals:', error);
       toast.error("Erreur lors du chargement du planning");

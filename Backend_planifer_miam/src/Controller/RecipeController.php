@@ -10,10 +10,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-#[Route('/api/recipes')]
 class RecipeController extends AbstractController
 {
-    #[Route('', methods: ['GET'])]
+    #[Route('/api/recipes', methods: ['GET'])]
     public function getAll(RecipeRepository $recipeRepository): JsonResponse
     {
         $recipes = $recipeRepository->findAll();
@@ -21,13 +20,13 @@ class RecipeController extends AbstractController
         return $this->json($recipes, 200, [], ['groups' => 'recipe:read']);
     }
 
-    #[Route('/{id}', methods: ['GET'])]
+    #[Route('/api/recipes/{id}', methods: ['GET'])]
     public function getOne(Recipe $recipe): JsonResponse
     {
         return $this->json($recipe, 200, [], ['groups' => 'recipe:read']);
     }
 
-    #[Route('', methods: ['POST'])]
+    #[Route('/api/recipes', methods: ['POST'])]
     public function create(Request $request, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -42,7 +41,7 @@ class RecipeController extends AbstractController
         return $this->json($recipe, 201, [], ['groups' => 'recipe:read']);
     }
 
-    #[Route('/{id}', methods: ['PUT'])]
+    #[Route('/api/recipes/{id}', methods: ['PUT'])]
     public function update(Request $request, Recipe $recipe, EntityManagerInterface $em): JsonResponse
     {
         $data = json_decode($request->getContent(), true);
@@ -55,7 +54,7 @@ class RecipeController extends AbstractController
         return $this->json($recipe, 200, [], ['groups' => 'recipe:read']);
     }
 
-    #[Route('/{id}', methods: ['DELETE'])]
+    #[Route('/api/recipes/{id}', methods: ['DELETE'])]
     public function delete(Recipe $recipe, EntityManagerInterface $em): JsonResponse
     {
         $em->remove($recipe);
