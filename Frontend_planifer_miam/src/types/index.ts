@@ -12,7 +12,7 @@ export interface Recipe {
   description: string;
   instructions: string;
   servings: number;
-  ingredients?: IngredientQuantity[];
+  ingredientQuantities?: IngredientQuantity[];
 }
 
 export interface Ingredient {

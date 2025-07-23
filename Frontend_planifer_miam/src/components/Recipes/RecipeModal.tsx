@@ -46,15 +46,14 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       fetchIngredients();
-      console.log(recipe);
       if (recipe) {
         setValue("name_recipe", recipe.nameRecipe);
         setValue("description", recipe.description);
         setValue("instructions", recipe.instructions);
         setValue("servings", recipe.servings);
 
-        if (recipe.ingredients && recipe.ingredients.length > 0) {
-          const recipeIngredients = recipe.ingredients.map((ing) => ({
+        if (recipe.ingredientQuantities && recipe.ingredientQuantities.length > 0) {
+          const recipeIngredients = recipe.ingredientQuantities.map((ing) => ({
             ingredient_id: ing.ingredient.id.toString(),
             quantity: ing.quantity.toString(),
           }));

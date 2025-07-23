@@ -44,7 +44,7 @@ let mockRecipes: Recipe[] = [
     description: 'Un classique italien avec une sauce riche en tomates et viande',
     instructions: '1. Faire revenir les oignons et l\'ail\n2. Ajouter la viande hachée\n3. Incorporer les tomates\n4. Laisser mijoter 30 minutes\n5. Servir avec les pâtes',
     servings: 4,
-    ingredients: [
+    ingredientQuantities: [
       { id: 1, quantity: 400, ingredient: mockIngredients[3] },
       { id: 2, quantity: 0.5, ingredient: mockIngredients[6] },
       { id: 3, quantity: 0.3, ingredient: mockIngredients[0] },
@@ -57,7 +57,7 @@ let mockRecipes: Recipe[] = [
     description: 'Plat complet avec du riz parfumé et du poulet tendre',
     instructions: '1. Faire dorer le poulet\n2. Ajouter le riz et les légumes\n3. Verser le bouillon\n4. Cuire 20 minutes',
     servings: 3,
-    ingredients: [
+    ingredientQuantities: [
       { id: 5, quantity: 300, ingredient: mockIngredients[4] },
       { id: 6, quantity: 0.4, ingredient: mockIngredients[5] },
       { id: 7, quantity: 0.2, ingredient: mockIngredients[7] },
@@ -272,7 +272,7 @@ export const shoppingListAPI = {
     const neededIngredients = new Map<number, { ingredient: Ingredient; totalQuantity: number; unit: string }>();
     
     mockPlannedMeals.forEach(meal => {
-      meal.recipe.ingredients?.forEach(ing => {
+      meal.recipe.ingredientQuantities?.forEach(ing => {
         const key = ing.ingredient.id;
         if (neededIngredients.has(key)) {
           const existing = neededIngredients.get(key)!;

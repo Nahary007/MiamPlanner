@@ -174,8 +174,8 @@ const Recipes: React.FC = () => {
                 <div className="border-t border-gray-200 dark:border-gray-700 pt-4">
                   <div className="flex items-center text-sm text-gray-600 dark:text-gray-400">
                     <ChefHat className="h-4 w-4 mr-1" />
-                    {recipe.ingredients?.length || 0} ingrédient
-                    {(recipe.ingredients?.length || 0) > 1 ? "s" : ""}
+                    {recipe.ingredientQuantities?.length || 0} ingrédient
+                    {(recipe.ingredientQuantities?.length || 0) > 1 ? "s" : ""}
                   </div>
                 </div>
               </div>
