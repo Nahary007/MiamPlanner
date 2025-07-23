@@ -40,7 +40,7 @@ const mockIngredients: Ingredient[] = [
 let mockRecipes: Recipe[] = [
   {
     id: 1,
-    name_recipe: 'Spaghetti Bolognaise',
+    nameRecipe: 'Spaghetti Bolognaise',
     description: 'Un classique italien avec une sauce riche en tomates et viande',
     instructions: '1. Faire revenir les oignons et l\'ail\n2. Ajouter la viande hachée\n3. Incorporer les tomates\n4. Laisser mijoter 30 minutes\n5. Servir avec les pâtes',
     servings: 4,
@@ -53,7 +53,7 @@ let mockRecipes: Recipe[] = [
   },
   {
     id: 2,
-    name_recipe: 'Riz au poulet',
+    nameRecipe: 'Riz au poulet',
     description: 'Plat complet avec du riz parfumé et du poulet tendre',
     instructions: '1. Faire dorer le poulet\n2. Ajouter le riz et les légumes\n3. Verser le bouillon\n4. Cuire 20 minutes',
     servings: 3,

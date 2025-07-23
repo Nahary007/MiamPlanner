@@ -46,8 +46,9 @@ const RecipeModal: React.FC<RecipeModalProps> = ({
   useEffect(() => {
     if (isOpen) {
       fetchIngredients();
+      console.log(recipe);
       if (recipe) {
-        setValue("name_recipe", recipe.name_recipe);
+        setValue("name_recipe", recipe.nameRecipe);
         setValue("description", recipe.description);
         setValue("instructions", recipe.instructions);
         setValue("servings", recipe.servings);

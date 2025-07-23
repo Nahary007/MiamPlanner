@@ -8,7 +8,7 @@ export interface User {
 
 export interface Recipe {
   id: number;
-  name_recipe: string;
+  nameRecipe: string;
   description: string;
   instructions: string;
   servings: number;

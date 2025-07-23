@@ -143,7 +143,7 @@ const Recipes: React.FC = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base md:text-lg font-semibold text-gray-900 dark:text-white mb-1 truncate">
-                      {recipe.name_recipe}
+                      {recipe.nameRecipe}
                     </h3>
                     <p className="text-sm text-gray-600 dark:text-gray-300">
                       {recipe.servings} portion{recipe.servings > 1 ? "s" : ""}
