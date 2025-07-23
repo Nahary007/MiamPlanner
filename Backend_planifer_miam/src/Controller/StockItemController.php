@@ -31,7 +31,8 @@ class StockItemController extends AbstractController
     }
 
     #[Route('/api/stock', methods: ['POST'])]
-    public function create(Request $request, EntityManagerInterface $em): JsonResponse {
+    public function create(Request $request, EntityManagerInterface $em): JsonResponse 
+    {
         $data = json_decode($request->getContent(), true);
         
         /** @var User $user */
@@ -48,16 +49,21 @@ class StockItemController extends AbstractController
         }
 
         $item = new StockItem();
-        $item->setIngredient($ingredient); // Utiliser setIngredient au lieu de setName
+        $item->setIngredient($ingredient);
         $item->setQuantity($data['quantity'] ?? 0);
         $item->setUnit($data['unit'] ?? '');
         $item->setUser($user);
         
-        // Gérer la date d'expiration
-        if (isset($data['expiration_date'])) {
-            $expirationDate = new \DateTime($data['expiration_date']);
-            $item->setExpirationDate($expirationDate);
+        // Gérer la date d'expiration (optionnelle maintenant)
+        if (isset($data['expirationDate']) && !empty($data['expirationDate'])) {
+            try {
+                $expirationDate = new \DateTime($data['expirationDate']);
+                $item->setExpirationDate($expirationDate);
+            } catch (\Exception $e) {
+                return $this->json(['error' => 'Invalid expiration date format'], 400);
+            }
         }
+        // Si pas de date d'expiration fournie, elle reste null (ce qui est maintenant autorisé)
 
         $em->persist($item);
         $em->flush();
