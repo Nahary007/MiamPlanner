@@ -23,5 +23,41 @@ class IngredientQuantityEntity
     #[ORM\JoinColumn(nullable: false)]
     private Ingredient $ingredient;
 
-    // Getters / Setters ...
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getQuantity(): float
+    {
+        return $this->quantity;
+    }
+
+    public function setQuantity(float $quantity): self
+    {
+        $this->quantity = $quantity;
+        return $this;
+    }
+
+    public function getRecipe(): Recipe
+    {
+        return $this->recipe;
+    }
+
+    public function setRecipe(Recipe $recipe): self
+    {
+        $this->recipe = $recipe;
+        return $this;
+    }
+
+    public function getIngredient(): Ingredient
+    {
+        return $this->ingredient;
+    }
+
+    public function setIngredient(Ingredient $ingredient): self
+    {
+        $this->ingredient = $ingredient;
+        return $this;
+    }
 }
