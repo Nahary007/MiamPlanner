@@ -233,7 +233,7 @@ const Stock: React.FC = () => {
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1 min-w-0">
                     <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 truncate">
-                      {item.ingredient.name_ingredient}
+                      {item.ingredient.nameIngredient}
                     </h3>
                     <p className="text-gray-600">
                       {item.quantity} {item.unit}

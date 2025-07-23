@@ -3,7 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\StockItem;
-use Doctrine\bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**

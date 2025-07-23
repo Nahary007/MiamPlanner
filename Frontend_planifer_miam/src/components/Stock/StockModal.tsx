@@ -118,7 +118,7 @@ const StockModal: React.FC<StockModalProps> = ({
                     <option value="">Choisir un ingrédient</option>
                     {ingredients.map((ingredient) => (
                       <option key={ingredient.id} value={ingredient.id}>
-                        {ingredient.name_ingredient}
+                        {ingredient.nameIngredient}
                       </option>
                     ))}
                   </select>
