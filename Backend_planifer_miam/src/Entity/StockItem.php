@@ -14,14 +14,15 @@ class StockItem
     #[ORM\Column]
     private ?int $id = null;
 
+    // Pas de Groups ici pour éviter d'exposer les infos sensibles du User
     #[ORM\ManyToOne(inversedBy: 'stockItems')]
     #[ORM\JoinColumn(nullable: false)]
     private User $user;
 
     #[Groups(['stock:read'])]
     #[ORM\ManyToOne(inversedBy: 'stockItems')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Ingredient $ingredient;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Ingredient $ingredient;
 
     #[Groups(['stock:read'])]
     #[ORM\Column]
@@ -35,7 +36,7 @@ class StockItem
     #[ORM\Column(type: 'datetime')]
     private \DateTimeInterface $expirationDate;
 
-    // Getters / Setters ...
+    // Getters / Setters
     public function getId(): ?int
     {
         return $this->id;
@@ -52,12 +53,12 @@ class StockItem
         return $this;
     }
 
-    public function getIngredient(): Ingredient
+    public function getIngredient(): ?Ingredient
     {
         return $this->ingredient;
     }
 
-    public function setIngredient(Ingredient $ingredient): self
+    public function setIngredient(?Ingredient $ingredient): self
     {
         $this->ingredient = $ingredient;
         return $this;
@@ -95,5 +96,4 @@ class StockItem
         $this->expirationDate = $expirationDate;
         return $this;
     }
-
 }

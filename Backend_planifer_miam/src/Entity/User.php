@@ -24,7 +24,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private string $email;
 
     #[ORM\Column(length: 255)]
-    private string $password; // mot de passe hashé
+    private string $password;
 
     #[ORM\Column(type: 'json')]
     private array $roles = [];
@@ -45,8 +45,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->plannelMeals = new ArrayCollection();
     }
 
-    // Getters et Setters
-
+    // Getters/Setters, UserInterface & PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
@@ -57,7 +56,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->nom;
     }
 
-    public function setNom(string $nom): static
+    public function setNom(string $nom): self
     {
         $this->nom = $nom;
         return $this;
@@ -68,17 +67,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->email;
     }
 
-    public function setEmail(string $email): static
+    public function setEmail(string $email): self
     {
         $this->email = $email;
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
@@ -89,7 +83,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $password): self
     {
         $this->password = $password;
         return $this;
@@ -98,57 +92,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // Garantit que chaque utilisateur a au moins le rôle ROLE_USER
         $roles[] = 'ROLE_USER';
         return array_unique($roles);
     }
 
-    public function setRoles(array $roles): static
+    public function setRoles(array $roles): self
     {
         $this->roles = $roles;
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        // Rien à faire ici
     }
 
-    /**
-     * @return Collection<int, Recipe>
-     */
-    public function getRecipes(): Collection
-    {
-        return $this->recipes;
-    }
-
-    public function addRecipe(Recipe $recipe): static
-    {
-        if (!$this->recipes->contains($recipe)) {
-            $this->recipes->add($recipe);
-        }
-        return $this;
-    }
-
-    public function removeRecipe(Recipe $recipe): static
-    {
-        $this->recipes->removeElement($recipe);
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, StockItem>
-     */
     public function getStockItems(): Collection
     {
         return $this->stockItems;
     }
 
-    public function addStockItem(StockItem $stockItem): static
+    public function addStockItem(StockItem $stockItem): self
     {
         if (!$this->stockItems->contains($stockItem)) {
             $this->stockItems->add($stockItem);
@@ -157,43 +121,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function removeStockItem(StockItem $stockItem): static
+    public function removeStockItem(StockItem $stockItem): self
     {
-        if ($this->stockItems->removeElement($stockItem)) {
-            // Définit le côté propriétaire à null (sauf si déjà changé)
-            if ($stockItem->getUser() === $this) {
-                // Supposons que setUser accepte null, sinon il faut adapter
-                // $stockItem->setUser(null);
-            }
+        if ($this->stockItems->removeElement($stockItem) && $stockItem->getUser() === $this) {
+            // $stockItem->setUser(null); // à éviter si nullable=false
         }
         return $this;
     }
-
-    /**
-     * @return Collection<int, PlannelMealEntity>
-     */
-    public function getPlannelMeals(): Collection
-    {
-        return $this->plannelMeals;
-    }
-
-    public function addPlannelMeal(PlannelMealEntity $plannelMeal): static
-    {
-        if (!$this->plannelMeals->contains($plannelMeal)) {
-            $this->plannelMeals->add($plannelMeal);
-            $plannelMeal->setUser($this);
-        }
-        return $this;
-    }
-
-    // public function removePlannelMeal(PlannelMealEntity $plannelMeal): static
-    // {
-    //     if ($this->plannelMeals->removeElement($plannelMeal)) {
-    //         // Définit le côté propriétaire à null (sauf si déjà changé)
-    //         if ($plannelMeal->getUser() === $this) {
-    //             $plannelMeal->setUser(null);
-    //         }
-    //     }
-    //     return $this;
-    // }
 }
