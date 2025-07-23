@@ -10,17 +10,17 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class Ingredient
 {
-    #[Groups(['ingredient:read'])]
+    #[Groups(['ingredient:read', 'recipe:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['ingredient:read'])]
+    #[Groups(['ingredient:read', 'recipe:read'])]
     #[ORM\Column(length: 255)]
     private string $nameIngredient;
 
-    #[Groups(['ingredient:read'])]
+    #[Groups(['ingredient:read', 'recipe:read'])]
     #[ORM\Column(length: 100)]
     private string $unit;
 

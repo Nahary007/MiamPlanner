@@ -7,11 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Serializer\Annotation\Groups;
 
-
 #[ORM\Entity]
 class Recipe
 {
-
+    #[Groups(['recipe:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -33,6 +32,7 @@ class Recipe
     #[ORM\Column]
     private int $servings;
 
+    #[Groups(['recipe:read'])]
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientQuantityEntity::class, cascade: ['persist', 'remove'])]
     private Collection $ingredientQuantities;
 
@@ -50,7 +50,6 @@ class Recipe
         $this->plannelMeals = new ArrayCollection();
     }
 
-    // Getters / Setters ...
     public function getId(): ?int
     {
         return $this->id;
@@ -100,4 +99,32 @@ class Recipe
         return $this;
     }
 
+    /**
+     * @return Collection<int, IngredientQuantityEntity>
+     */
+    public function getIngredientQuantities(): Collection
+    {
+        return $this->ingredientQuantities;
+    }
+
+    public function addIngredientQuantity(IngredientQuantityEntity $ingredientQuantity): self
+    {
+        if (!$this->ingredientQuantities->contains($ingredientQuantity)) {
+            $this->ingredientQuantities->add($ingredientQuantity);
+            $ingredientQuantity->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeIngredientQuantity(IngredientQuantityEntity $ingredientQuantity): self
+    {
+        if ($this->ingredientQuantities->removeElement($ingredientQuantity)) {
+            if ($ingredientQuantity->getRecipe() === $this) {
+                $ingredientQuantity->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
 }

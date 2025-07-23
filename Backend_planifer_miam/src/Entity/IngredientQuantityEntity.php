@@ -3,15 +3,18 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity]
 class IngredientQuantityEntity
 {
+    #[Groups(['recipe:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
+    #[Groups(['recipe:read'])]
     #[ORM\Column]
     private float $quantity;
 
@@ -19,9 +22,10 @@ class IngredientQuantityEntity
     #[ORM\JoinColumn(nullable: false)]
     private Recipe $recipe;
 
+    #[Groups(['recipe:read'])]
     #[ORM\ManyToOne(inversedBy: 'ingredientQuantities')]
-    #[ORM\JoinColumn(nullable: false)]
-    private Ingredient $ingredient;
+    #[ORM\JoinColumn(nullable: true)]
+    private ?Ingredient $ingredient = null;
 
     public function getId(): ?int
     {
@@ -50,12 +54,12 @@ class IngredientQuantityEntity
         return $this;
     }
 
-    public function getIngredient(): Ingredient
+    public function getIngredient(): ?Ingredient
     {
         return $this->ingredient;
     }
 
-    public function setIngredient(Ingredient $ingredient): self
+    public function setIngredient(?Ingredient $ingredient): self
     {
         $this->ingredient = $ingredient;
         return $this;
