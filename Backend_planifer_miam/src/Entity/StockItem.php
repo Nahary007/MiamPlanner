@@ -22,7 +22,7 @@ class StockItem
     #[Groups(['stock:read'])]
     #[ORM\ManyToOne(inversedBy: 'stockItems')]
     #[ORM\JoinColumn(nullable: true)]
-    private ?Ingredient $ingredient;
+    private ?Ingredient $ingredient = null;
 
     #[Groups(['stock:read'])]
     #[ORM\Column]
@@ -33,8 +33,8 @@ class StockItem
     private string $unit;
 
     #[Groups(['stock:read'])]
-    #[ORM\Column(type: 'datetime')]
-    private \DateTimeInterface $expirationDate;
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    private ?\DateTimeInterface $expirationDate = null;
 
     // Getters / Setters
     public function getId(): ?int
@@ -86,12 +86,12 @@ class StockItem
         return $this;
     }
 
-    public function getExpirationDate(): \DateTimeInterface
+    public function getExpirationDate(): ?\DateTimeInterface
     {
         return $this->expirationDate;
     }
 
-    public function setExpirationDate(\DateTimeInterface $expirationDate): self
+    public function setExpirationDate(?\DateTimeInterface $expirationDate): self
     {
         $this->expirationDate = $expirationDate;
         return $this;
