@@ -10,29 +10,29 @@ use Symfony\Component\Serializer\Annotation\Groups;
 #[ORM\Entity]
 class Recipe
 {
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read', 'meal:read'])]
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read', 'meal:read'])]
     #[ORM\Column(length: 255)]
     private string $nameRecipe;
 
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read', 'meal:read'])]
     #[ORM\Column(type: 'text')]
     private string $description;
 
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read', 'meal:read'])]
     #[ORM\Column(type: 'text')]
     private string $instructions;
 
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read', 'meal:read'])]
     #[ORM\Column]
     private int $servings;
 
-    #[Groups(['recipe:read'])]
+    #[Groups(['recipe:read'])] // <-- Tu peux ajouter 'meal:read' ici si tu veux afficher les ingrédients dans le planning
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: IngredientQuantityEntity::class, cascade: ['persist', 'remove'])]
     private Collection $ingredientQuantities;
 
