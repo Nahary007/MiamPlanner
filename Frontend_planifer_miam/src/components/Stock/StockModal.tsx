@@ -47,7 +47,7 @@ const StockModal: React.FC<StockModalProps> = ({
 
         if (stockItem) {
           reset({
-            ingredient_id: String(stockItem.ingredient_id),
+            ingredient_id: String(stockItem.ingredient.id),
             quantity: stockItem.quantity,
             unit: stockItem.unit,
             expirationDate: stockItem.expirationDate.split("T")[0],
