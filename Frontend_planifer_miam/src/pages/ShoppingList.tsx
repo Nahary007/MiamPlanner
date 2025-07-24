@@ -176,7 +176,7 @@ const ShoppingList: React.FC = () => {
               >
                 <div className="flex-1 min-w-0">
                   <h3 className="font-medium text-gray-900 truncate">
-                    {item.ingredient.name_ingredient}
+                    {item.ingredient.nameIngredient}
                   </h3>
                   <div className="text-sm text-gray-600 mt-1">
                     <span>

@@ -264,54 +264,20 @@ export const plannedMealsAPI = {
 };
 
 // Shopping List API
+// Shopping List API
 export const shoppingListAPI = {
   generate: async (startDate: string): Promise<ShoppingListItem[]> => {
-    await delay(800);
-    
-    // Calculate needed ingredients from planned meals
-    const neededIngredients = new Map<number, { ingredient: Ingredient; totalQuantity: number; unit: string }>();
-    
-    mockPlannedMeals.forEach(meal => {
-      meal.recipe.ingredientQuantities?.forEach(ing => {
-        const key = ing.ingredient.id;
-        if (neededIngredients.has(key)) {
-          const existing = neededIngredients.get(key)!;
-          existing.totalQuantity += ing.quantity;
-        } else {
-          neededIngredients.set(key, {
-            ingredient: ing.ingredient,
-            totalQuantity: ing.quantity,
-            unit: ing.ingredient.unit
-          });
-        }
-      });
+    const res = await axios.get('http://localhost:8000/api/shopping-list/generate', {
+      params: { startDate }
     });
-    
-    // Calculate what's needed after subtracting stock
-    const shoppingList: ShoppingListItem[] = [];
-    
-    neededIngredients.forEach((needed, ingredientId) => {
-      const stockItem = mockStockItems.find(s => s.ingredient_id === ingredientId);
-      const availableQuantity = stockItem ? stockItem.quantity : 0;
-      const neededQuantity = Math.max(0, needed.totalQuantity - availableQuantity);
-      
-      if (neededQuantity > 0) {
-        shoppingList.push({
-          ingredient: needed.ingredient,
-          totalQuantity: needed.totalQuantity,
-          unit: needed.unit,
-          neededQuantity
-        });
-      }
-    });
-    
-    return shoppingList;
+    return res.data;
   },
-  
+
   download: async (startDate: string): Promise<Blob> => {
-    await delay(1000);
-    // Create a simple text file for demo
-    const content = `Liste de courses - Semaine du ${startDate}\n\nArticles à acheter:\n- Exemple d'article\n- Autre article`;
-    return new Blob([content], { type: 'text/plain' });
+    const res = await axios.get('http://localhost:8000/api/shopping-list/download', {
+      params: { startDate },
+      responseType: 'blob',
+    });
+    return res.data;
   },
 };
