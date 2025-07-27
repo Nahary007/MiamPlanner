@@ -43,6 +43,10 @@ class Recipe
     #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: PlannelMealEntity::class)]
     private Collection $plannelMeals;
 
+    #[ORM\ManyToOne(inversedBy: 'userRecipes')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->ingredientQuantities = new ArrayCollection();
@@ -99,9 +103,6 @@ class Recipe
         return $this;
     }
 
-    /**
-     * @return Collection<int, IngredientQuantityEntity>
-     */
     public function getIngredientQuantities(): Collection
     {
         return $this->ingredientQuantities;
@@ -125,6 +126,17 @@ class Recipe
             }
         }
 
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
         return $this;
     }
 }
