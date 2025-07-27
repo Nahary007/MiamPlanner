@@ -1,11 +1,11 @@
-# 🍽️ MiamPlanner
+#  MiamPlanner
 
 **MiamPlanner** est une application web pour planifier vos repas, gérer vos recettes, vos ingrédients, votre stock, et générer automatiquement votre liste de courses.  
 Le projet est composé d’un **frontend React** et d’un **backend Symfony**.
 
 ---
 
-## ✅ Prérequis
+##  Prérequis
 
 Avant de commencer, assurez-vous d’avoir installé :
 
@@ -16,7 +16,7 @@ Avant de commencer, assurez-vous d’avoir installé :
 
 ---
 
-## ⚙️ Étapes d'installation
+##  Étapes d'installation
 
 ### 1. Cloner le dépôt
 
@@ -54,7 +54,7 @@ bash
 Copier
 Modifier
 symfony server:start
-🔒 Important
+🔒Important
 ⚠️ Avant de modifier ou contribuer au projet, merci de me contacter par email :
 📧 toavina.rabenajanaharisoa@gmail.com
 
