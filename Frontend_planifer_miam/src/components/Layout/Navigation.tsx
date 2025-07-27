@@ -179,19 +179,6 @@ const Navigation: React.FC = () => {
               );
             })}
 
-            {/* Profile */}
-            <Link
-              to="/profile"
-              className={`flex flex-col items-center justify-center space-y-1 transition-colors ${
-                location.pathname === "/profile"
-                  ? "text-emerald-600 dark:text-emerald-400"
-                  : "text-gray-400 dark:text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
-              }`}
-            >
-              <User className="h-5 w-5" />
-              <span className="text-xs font-medium">Profil</span>
-            </Link>
-
             {/* Logout */}
             <button
               onClick={handleLogout}
