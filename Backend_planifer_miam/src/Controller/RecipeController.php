@@ -11,19 +11,29 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class RecipeController extends AbstractController
 {
     #[Route('/api/recipes', methods: ['GET'])]
     public function getAll(RecipeRepository $recipeRepository): JsonResponse
     {
-        $recipes = $recipeRepository->findAll();
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        $recipes = $recipeRepository->findBy(['user' => $user]);
+
         return $this->json($recipes, 200, [], ['groups' => 'recipe:read']);
     }
 
     #[Route('/api/recipes/{id}', methods: ['GET'])]
     public function getOne(Recipe $recipe): JsonResponse
     {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        if ($recipe->getUser() !== $user) {
+            return new JsonResponse(['message' => 'Access denied'], 403);
+        }
+
         return $this->json($recipe, 200, [], ['groups' => 'recipe:read']);
     }
 
@@ -34,22 +44,25 @@ class RecipeController extends AbstractController
         IngredientRepository $ingredientRepo
     ): JsonResponse {
         $data = json_decode($request->getContent(), true);
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
 
-        // Création de la recette
         $recipe = new Recipe();
         $recipe->setNameRecipe($data['name_recipe'] ?? '');
         $recipe->setDescription($data['description'] ?? '');
         $recipe->setInstructions($data['instructions'] ?? '');
         $recipe->setServings((int)($data['servings'] ?? 1));
+        $recipe->setUser($user); // 🔥 Ajout du user
 
-        // Ajout des ingrédients/quantités
         if (!empty($data['ingredients']) && is_array($data['ingredients'])) {
             foreach ($data['ingredients'] as $ingData) {
                 if (!isset($ingData['ingredient_id'], $ingData['quantity'])) {
                     continue;
                 }
+
                 $ingredient = $ingredientRepo->find($ingData['ingredient_id']);
-                if ($ingredient) {
+
+                if ($ingredient && $ingredient->getUser() === $user) {
                     $iq = new IngredientQuantityEntity();
                     $iq->setIngredient($ingredient);
                     $iq->setQuantity((float) $ingData['quantity']);
@@ -72,6 +85,12 @@ class RecipeController extends AbstractController
         EntityManagerInterface $em,
         IngredientRepository $ingredientRepo
     ): JsonResponse {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        if ($recipe->getUser() !== $user) {
+            return new JsonResponse(['message' => 'Access denied'], 403);
+        }
+
         $data = json_decode($request->getContent(), true);
 
         $recipe->setNameRecipe($data['name_recipe'] ?? $recipe->getNameRecipe());
@@ -79,20 +98,20 @@ class RecipeController extends AbstractController
         $recipe->setInstructions($data['instructions'] ?? $recipe->getInstructions());
         $recipe->setServings((int)($data['servings'] ?? $recipe->getServings()));
 
-        // Suppression des anciennes quantités d'ingrédients
         foreach ($recipe->getIngredientQuantities() as $oldIq) {
             $em->remove($oldIq);
         }
         $recipe->getIngredientQuantities()->clear();
 
-        // Ajout des nouveaux ingrédients/quantités
         if (!empty($data['ingredients']) && is_array($data['ingredients'])) {
             foreach ($data['ingredients'] as $ingData) {
                 if (!isset($ingData['ingredient_id'], $ingData['quantity'])) {
                     continue;
                 }
+
                 $ingredient = $ingredientRepo->find($ingData['ingredient_id']);
-                if ($ingredient) {
+
+                if ($ingredient && $ingredient->getUser() === $user) {
                     $iq = new IngredientQuantityEntity();
                     $iq->setIngredient($ingredient);
                     $iq->setQuantity((float) $ingData['quantity']);
@@ -110,6 +129,12 @@ class RecipeController extends AbstractController
     #[Route('/api/recipes/{id}', methods: ['DELETE'])]
     public function delete(Recipe $recipe, EntityManagerInterface $em): JsonResponse
     {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+        if ($recipe->getUser() !== $user) {
+            return new JsonResponse(['message' => 'Access denied'], 403);
+        }
+
         $em->remove($recipe);
         $em->flush();
 
