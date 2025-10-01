@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste de courses</title>
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 14px; }
+        h1 { text-align: center; }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #eee;
+        }
+    </style>
+</head>
+<body>
+    <h1>Liste de courses</h1>
+    <p>Période : {{ startDate|date('d/m/Y') }} au {{ endDate|date('d/m/Y') }}</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Ingrédient</th>
+                <th>Quantité totale</th>
+                <th>Unité</th>
+                <th>À acheter</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in shoppingList %}
+                <tr>
+                    <td>{{ item.ingredient.nameIngredient }}</td>
+                    <td>{{ item.totalQuantity }}</td>
+                    <td>{{ item.unit }}</td>
+                    <td>{{ item.neededQuantity }}</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="4">Aucun article à acheter.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
