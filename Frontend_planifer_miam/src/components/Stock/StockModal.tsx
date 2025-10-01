@@ -19,6 +19,7 @@ const StockModal: React.FC<StockModalProps> = ({
   onSaved,
 }) => {
   const [ingredients, setIngredients] = useState<Ingredient[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -26,35 +27,43 @@ const StockModal: React.FC<StockModalProps> = ({
     reset,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm();
+  } = useForm({
+    defaultValues: {
+      ingredient_id: "",
+      quantity: "",
+      unit: "",
+      expirationDate: "",
+    },
+  });
 
   useEffect(() => {
-    if (isOpen) {
-      fetchIngredients();
-      if (stockItem) {
-        setValue("ingredient_id", stockItem.ingredient_id);
-        setValue("quantity", stockItem.quantity);
-        setValue("unit", stockItem.unit);
-        setValue("expirationDate", stockItem.expirationDate.split("T")[0]);
-      } else {
-        reset({
-          ingredient_id: "",
-          quantity: "",
-          unit: "",
-          expirationDate: "",
-        });
-      }
-    }
-  }, [isOpen, stockItem, setValue, reset]);
+    if (!isOpen) return;
 
-  const fetchIngredients = async () => {
-    try {
-      const data = await ingredientsAPI.getAll();
-      setIngredients(data);
-    } catch (error: any) {
-      toast.error("Erreur lors du chargement des ingrédients");
-    }
-  };
+    const loadData = async () => {
+      try {
+        setLoading(true);
+        const data = await ingredientsAPI.getAll();
+        setIngredients(data);
+
+        if (stockItem) {
+          reset({
+            ingredient_id: String(stockItem.ingredient.id),
+            quantity: stockItem.quantity,
+            unit: stockItem.unit,
+            expirationDate: stockItem.expirationDate.split("T")[0],
+          });
+        } else {
+          reset();
+        }
+      } catch (error) {
+        toast.error("Erreur lors du chargement des ingrédients");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadData();
+  }, [isOpen, stockItem, reset]);
 
   const onSubmit = async (data: any) => {
     try {
@@ -104,98 +113,105 @@ const StockModal: React.FC<StockModalProps> = ({
                 </button>
               </div>
 
-              <div className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Ingrédient *
-                  </label>
-                  <select
-                    {...register("ingredient_id", {
-                      required: "Ingrédient requis",
-                    })}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-                  >
-                    <option value="">Choisir un ingrédient</option>
-                    {ingredients.map((ingredient) => (
-                      <option key={ingredient.id} value={ingredient.id}>
-                        {ingredient.nameIngredient}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.ingredient_id && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.ingredient_id.message}
-                    </p>
-                  )}
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
+              {loading ? (
+                <p className="text-center text-gray-500">Chargement...</p>
+              ) : (
+                <div className="space-y-4">
+                  {/* Ingrédient */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Quantité *
+                      Ingrédient *
                     </label>
-                    <input
-                      {...register("quantity", {
-                        required: "Quantité requise",
-                        min: {
-                          value: 0.1,
-                          message: "La quantité doit être positive",
-                        },
+                    <select
+                      {...register("ingredient_id", {
+                        required: "Ingrédient requis",
                       })}
-                      type="number"
-                      step="0.1"
-                      min="0.1"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-                    />
-                    {errors.quantity && (
+                    >
+                      <option value="">Choisir un ingrédient</option>
+                      {ingredients.map((ingredient) => (
+                        <option key={ingredient.id} value={ingredient.id}>
+                          {ingredient.nameIngredient}
+                        </option>
+                      ))}
+                    </select>
+                    {errors.ingredient_id && (
                       <p className="mt-1 text-sm text-red-600">
-                        {errors.quantity.message}
+                        {errors.ingredient_id.message}
                       </p>
                     )}
                   </div>
 
+                  {/* Quantité et Unité */}
+                  <div className="grid grid-cols-2 gap-4">
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Quantité *
+                      </label>
+                      <input
+                        {...register("quantity", {
+                          required: "Quantité requise",
+                          min: {
+                            value: 0.1,
+                            message: "La quantité doit être positive",
+                          },
+                        })}
+                        type="number"
+                        step="0.1"
+                        min="0.1"
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                      {errors.quantity && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.quantity.message}
+                        </p>
+                      )}
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Unité *
+                      </label>
+                      <input
+                        {...register("unit", { required: "Unité requise" })}
+                        type="text"
+                        placeholder="kg, g, L, ml..."
+                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
+                      />
+                      {errors.unit && (
+                        <p className="mt-1 text-sm text-red-600">
+                          {errors.unit.message}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  {/* Date de péremption */}
                   <div>
                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                      Unité *
+                      Date de péremption *
                     </label>
                     <input
-                      {...register("unit", { required: "Unité requise" })}
-                      type="text"
-                      placeholder="kg, g, L, ml..."
+                      {...register("expirationDate", {
+                        required: "Date de péremption requise",
+                      })}
+                      type="date"
                       className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
                     />
-                    {errors.unit && (
+                    {errors.expirationDate && (
                       <p className="mt-1 text-sm text-red-600">
-                        {errors.unit.message}
+                        {errors.expirationDate.message}
                       </p>
                     )}
                   </div>
                 </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-1">
-                    Date de péremption *
-                  </label>
-                  <input
-                    {...register("expirationDate", {
-                      required: "Date de péremption requise",
-                    })}
-                    type="date"
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-emerald-500 focus:border-emerald-500"
-                  />
-                  {errors.expirationDate && (
-                    <p className="mt-1 text-sm text-red-600">
-                      {errors.expirationDate.message}
-                    </p>
-                  )}
-                </div>
-              </div>
+              )}
             </div>
 
             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
               <button
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || loading}
                 className="w-full inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-emerald-600 text-base font-medium text-white hover:bg-emerald-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-500 sm:ml-3 sm:w-auto sm:text-sm disabled:opacity-50"
               >
                 {isSubmitting ? "Sauvegarde..." : "Sauvegarder"}

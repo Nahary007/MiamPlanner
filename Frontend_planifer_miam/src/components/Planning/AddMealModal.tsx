@@ -58,13 +58,11 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
 
   const handleAddExistingRecipe = async (recipeId: number) => {
     try {
-      console.log('Adding existing recipe:', recipeId, 'for date:', date, 'mealType:', mealType);
       const meal = await plannedMealsAPI.create({
         recipeId: recipeId,
         date,
         mealType,
       });
-      console.log('Meal created successfully:', meal);
       onMealAdded(meal);
       onClose();
     } catch (error: any) {
@@ -170,7 +168,7 @@ const AddMealModal: React.FC<AddMealModalProps> = ({
                         >
                           <div>
                             <h4 className="font-medium text-gray-900">
-                              {recipe.name_recipe}
+                              {recipe.nameRecipe}
                             </h4>
                             <p className="text-sm text-gray-600">
                               {recipe.servings} portions

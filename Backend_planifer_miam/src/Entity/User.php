@@ -38,14 +38,21 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: PlannelMealEntity::class)]
     private Collection $plannelMeals;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recipe::class)]
+    private Collection $userRecipes;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Ingredient::class)]
+    private Collection $userIngredients;
+
     public function __construct()
     {
         $this->recipes = new ArrayCollection();
         $this->stockItems = new ArrayCollection();
         $this->plannelMeals = new ArrayCollection();
+        $this->userRecipes = new ArrayCollection();
+        $this->userIngredients = new ArrayCollection();
     }
 
-    // Getters/Setters, UserInterface & PasswordAuthenticatedUserInterface
     public function getId(): ?int
     {
         return $this->id;
@@ -125,6 +132,50 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         if ($this->stockItems->removeElement($stockItem) && $stockItem->getUser() === $this) {
             // $stockItem->setUser(null); // à éviter si nullable=false
+        }
+        return $this;
+    }
+
+    public function getUserRecipes(): Collection
+    {
+        return $this->userRecipes;
+    }
+
+    public function addUserRecipe(Recipe $recipe): self
+    {
+        if (!$this->userRecipes->contains($recipe)) {
+            $this->userRecipes->add($recipe);
+            $recipe->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeUserRecipe(Recipe $recipe): self
+    {
+        if ($this->userRecipes->removeElement($recipe) && $recipe->getUser() === $this) {
+            $recipe->setUser(null);
+        }
+        return $this;
+    }
+
+    public function getUserIngredients(): Collection
+    {
+        return $this->userIngredients;
+    }
+
+    public function addUserIngredient(Ingredient $ingredient): self
+    {
+        if (!$this->userIngredients->contains($ingredient)) {
+            $this->userIngredients->add($ingredient);
+            $ingredient->setUser($this);
+        }
+        return $this;
+    }
+
+    public function removeUserIngredient(Ingredient $ingredient): self
+    {
+        if ($this->userIngredients->removeElement($ingredient) && $ingredient->getUser() === $this) {
+            $ingredient->setUser(null);
         }
         return $this;
     }
