@@ -22,38 +22,27 @@ Avant de commencer, assurez-vous d’avoir installé :
 1. Cloner le dépôt
 git clone https://github.com/Nahary007/MiamPlanner.git MiamPlanner
 cd MiamPlanner
+
 2. Installer le frontend (React)
-bash
-Copier
-Modifier
 cd Frontend_planifer_miam
 npm install
 npm run dev
+
 3. Installer le backend (Symfony)
-bash
-Copier
-Modifier
 cd ../backend
 composer install
 cp .env.example .env
-Modifier la ligne suivante dans .env avec vos informations MySQL :
 
-env
-Copier
-Modifier
+Modifier la ligne suivante dans .env avec vos informations MySQL :
 DATABASE_URL="mysql://username:password@127.0.0.1:3306/nom_de_la_base"
+
 4. Créer la base de données et exécuter les migrations
-bash
-Copier
-Modifier
 php bin/console doctrine:database:create
 php bin/console doctrine:migrations:migrate
+
 5. Lancer le serveur Symfony
-bash
-Copier
-Modifier
 symfony server:start
-🔒Important
+
 ⚠️ Avant de modifier ou contribuer au projet, merci de me contacter par email :
 📧 toavina.rabenajanaharisoa@gmail.com
 
